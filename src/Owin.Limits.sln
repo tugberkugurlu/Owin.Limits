@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4644748A-9034-4338-9CA2-D8C4A66DBCFF}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E129E87-1111-4E18-A73E-E64A2DA359BE}"
+	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.Limits", "Owin.Limits\Owin.Limits.csproj", "{757A5ABF-F560-416D-8494-C7A2C6F8E1EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.Limits.Tests", "Owin.Limits.Tests\Owin.Limits.Tests.csproj", "{2C2D78F6-27ED-4777-9E1A-476F9816E344}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{757A5ABF-F560-416D-8494-C7A2C6F8E1EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{757A5ABF-F560-416D-8494-C7A2C6F8E1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{757A5ABF-F560-416D-8494-C7A2C6F8E1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{757A5ABF-F560-416D-8494-C7A2C6F8E1EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C2D78F6-27ED-4777-9E1A-476F9816E344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C2D78F6-27ED-4777-9E1A-476F9816E344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C2D78F6-27ED-4777-9E1A-476F9816E344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C2D78F6-27ED-4777-9E1A-476F9816E344}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Owin.Limits</id>
+        <version>0.0.0.0</version>
+        <authors>Damian Hickey</authors>
+        <owners>Damian Hickey</owners>
+        <projectUrl>https://github.com/damianh/Owin.Limits</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <title>Owin.Limits</title>
+        <description>OWIN Middleware that applies limits - MaxBandwidth, MaxConcurrentConnections, ConnectionTimeout, MaxRequestSize - to an OWIN pipeline.</description>
+        <tags>owin, middleware, throttling, limits</tags>
+        <frameworkAssemblies/>
+        <dependencies>
+            <dependency id="Owin" version="1.0"/>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Owin.SiteMapping\net40\Owin.Limits.dll" target="lib\net45" />
+        <file src="bin\Owin.SiteMapping\net40\Owin.Limits.xml" target="lib\net45" />
+    </files>
+</package>
