@@ -12,16 +12,16 @@
     internal class ThrottledStream : Stream
     {
         private const long Infinite = 0;
-        private readonly Stream _baseStream;
+        private readonly Stream _innerStream;
         private long _byteCount;
         private readonly long _maximumBytesPerSecond;
         private long _start;
         
-        public ThrottledStream(Stream baseStream, long maximumBytesPerSecond = Infinite)
+        public ThrottledStream(Stream innerStream, long maximumBytesPerSecond = Infinite)
         {
-            if (baseStream == null)
+            if (innerStream == null)
             {
-                throw new ArgumentNullException("baseStream");
+                throw new ArgumentNullException("innerStream");
             }
 
             if (maximumBytesPerSecond < 0)
@@ -31,7 +31,7 @@
                     "The maximum number of bytes per second can't be negatie.");
             }
 
-            _baseStream = baseStream;
+            _innerStream = innerStream;
             _maximumBytesPerSecond = maximumBytesPerSecond;
             _start = CurrentMilliseconds;
             _byteCount = 0;
@@ -44,78 +44,78 @@
 
         public override bool CanRead
         {
-            get { return _baseStream.CanRead; }
+            get { return _innerStream.CanRead; }
         }
 
         public override bool CanSeek
         {
-            get { return _baseStream.CanSeek; }
+            get { return _innerStream.CanSeek; }
         }
 
         public override bool CanWrite
         {
-            get { return _baseStream.CanWrite; }
+            get { return _innerStream.CanWrite; }
         }
 
         public override long Length
         {
-            get { return _baseStream.Length; }
+            get { return _innerStream.Length; }
         }
 
         public override long Position
         {
-            get { return _baseStream.Position; }
-            set { _baseStream.Position = value; }
+            get { return _innerStream.Position; }
+            set { _innerStream.Position = value; }
         }
 
         public override void Flush()
         {
-            _baseStream.Flush();
+            _innerStream.Flush();
         }
 
         public override void Close()
         {
-            _baseStream.Close();
+            _innerStream.Close();
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
             Throttle(count).Wait();
 
-            return _baseStream.Read(buffer, offset, count);
+            return _innerStream.Read(buffer, offset, count);
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return _baseStream.Seek(offset, origin);
+            return _innerStream.Seek(offset, origin);
         }
 
         public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             await Throttle(count);
-            await _baseStream.WriteAsync(buffer, offset, count, cancellationToken);
+            await _innerStream.WriteAsync(buffer, offset, count, cancellationToken);
         }
 
         public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             await Throttle(count);
-            return await _baseStream.ReadAsync(buffer, offset, count, cancellationToken);
+            return await _innerStream.ReadAsync(buffer, offset, count, cancellationToken);
         }
 
         public override void SetLength(long value)
         {
-            _baseStream.SetLength(value);
+            _innerStream.SetLength(value);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
             Throttle(count).Wait();
-            _baseStream.Write(buffer, offset, count);
+            _innerStream.Write(buffer, offset, count);
         }
 
         public override string ToString()
         {
-            return _baseStream.ToString();
+            return _innerStream.ToString();
         }
 
         private async Task Throttle(int bufferSizeInBytes)
