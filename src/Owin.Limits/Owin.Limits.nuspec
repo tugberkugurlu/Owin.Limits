@@ -16,7 +16,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Owin.SiteMapping\net40\Owin.Limits.dll" target="lib\net45" />
-        <file src="bin\Owin.SiteMapping\net40\Owin.Limits.xml" target="lib\net45" />
+        <file src="bin\Owin.Limits\net45\Owin.Limits.dll" target="lib\net45" />
+        <file src="bin\Owin.Limits\net45\Owin.Limits.xml" target="lib\net45" />
     </files>
 </package>
