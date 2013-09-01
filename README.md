@@ -4,9 +4,9 @@ Owin.Limits
 OWIN middleware to apply limits to an OWIN pipeline.
 
 Implemented
- - MaxBandwidth
- - MaxConcurrentConections
- - ConnectionTimeout
+ - Max bandwidth
+ - Max concurrent requests
+ - Connection timeout
  
 TODO
  - MaxAllowedContentLength

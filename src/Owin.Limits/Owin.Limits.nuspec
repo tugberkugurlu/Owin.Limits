@@ -8,7 +8,7 @@
         <projectUrl>https://github.com/damianh/Owin.Limits</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Owin.Limits</title>
-        <description>OWIN Middleware that applies limits - MaxBandwidth, MaxConcurrentConnections, ConnectionTimeout, MaxRequestSize - to an OWIN pipeline.</description>
+        <description>OWIN Middleware that applies limits to an OWIN pipeline. Currently supported are max bandwidth, max concurrent requests and connection timeout.</description>
         <tags>owin, middleware, throttling, limits</tags>
         <frameworkAssemblies/>
         <dependencies>
