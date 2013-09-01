@@ -13,7 +13,7 @@ namespace Owin
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="maxBytesPerSecond">The maximum number of bytes per second to be transferred. Use 0 or a negative
         /// number to specify infinite bandwidth.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         public static IAppBuilder MaxBandwidth(this IAppBuilder builder, int maxBytesPerSecond)
         {
             return MaxBandwidth(builder, () => maxBytesPerSecond);
@@ -25,7 +25,7 @@ namespace Owin
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="getMaxBytesPerSecond">A delegate to retrieve the maximum number of bytes per second to be transferred.
         /// Allows you to supply different values at runtime. Use 0 or a negative number to specify infinite bandwidth.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         public static IAppBuilder MaxBandwidth(this IAppBuilder builder, Func<int> getMaxBytesPerSecond)
         {
             if (builder == null)
@@ -41,7 +41,7 @@ namespace Owin
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="maxConcurrentRequests">The maximum number of concurrent requests. Use 0 or a negative
         /// number to specify unlimited number of concurrent requests.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         public static IAppBuilder MaxConcurrentRequests(this IAppBuilder builder, int maxConcurrentRequests)
         {
             return MaxConcurrentRequests(builder, () => maxConcurrentRequests);
@@ -53,7 +53,7 @@ namespace Owin
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="getMaxConcurrentRequests">A delegate to retrieve the maximum number of concurrent requests. Allows you
         /// to supply different values at runtime. Use 0 or a negative number to specify unlimited number of concurrent requests.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         public static IAppBuilder MaxConcurrentRequests(this IAppBuilder builder, Func<int> getMaxConcurrentRequests)
         {
             if (builder == null)
@@ -64,31 +64,32 @@ namespace Owin
         }
 
         /// <summary>
-        /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
+        /// Timeouts the connection if there hasn't been an read read activity on the request body stream or any
+        /// write activity on the response body stream.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
-        /// <param name="maxConcurrentRequests">The maximum number of concurrent requests. Use 0 or a negative
-        /// number to specify unlimited number of concurrent requests.</param>
-        /// <returns></returns>
-        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, TimeSpan maxConcurrentRequests)
+        /// <param name="timeout">The timeout.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, TimeSpan timeout)
         {
-            return ConnectionTimeout(builder, () => maxConcurrentRequests);
+            return ConnectionTimeout(builder, () => timeout);
         }
 
         /// <summary>
-        /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
+        /// Timeouts the connection if there hasn't been an read read activity on the request body stream or any
+        /// write activity on the response body stream.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
-        /// <param name="getMaxConcurrentRequests">A delegate to retrieve the maximum number of concurrent requests. Allows you
-        /// to supply different values at runtime. Use 0 or a negative number to specify unlimited number of concurrent requests.</param>
-        /// <returns></returns>
-        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, Func<TimeSpan> getMaxConcurrentRequests)
+        /// <param name="getTimeout">A delegate to retrieve the timeout timespan. Allows you
+        /// to supply different values at runtime.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, Func<TimeSpan> getTimeout)
         {
             if (builder == null)
             {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<ConnectionTimeoutMiddleware>(getMaxConcurrentRequests);
+            return builder.Use<ConnectionTimeoutMiddleware>(getTimeout);
         }
     }
 }
