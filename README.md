@@ -3,12 +3,14 @@ Owin.Limits
 
 OWIN middleware to apply limits to an OWIN pipeline.
 
-Implemented
+Install via [nuget].
+
+Implemented:
  - Max bandwidth
  - Max concurrent requests
  - Connection timeout
  
-TODO
+TODO:
  - MaxAllowedContentLength
  - MaxQueryString (enforced by hosts?)
  - MaxUrl (enforced by hosts?)
@@ -44,4 +46,5 @@ Pull requests gratefully accepted.
 
 Questions or suggestions? Create an issue or [@randompunter] on twitter.
 
+[nuget]: https://www.nuget.org/packages/Owin.Limits
 [@randompunter]: http://twitter.com/randompunter
