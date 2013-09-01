@@ -62,5 +62,33 @@ namespace Owin
             }
             return builder.Use<MaxConcurrentRequestsMiddleware>(getMaxConcurrentRequests);
         }
+
+        /// <summary>
+        /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="maxConcurrentRequests">The maximum number of concurrent requests. Use 0 or a negative
+        /// number to specify unlimited number of concurrent requests.</param>
+        /// <returns></returns>
+        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, TimeSpan maxConcurrentRequests)
+        {
+            return ConnectionTimeout(builder, () => maxConcurrentRequests);
+        }
+
+        /// <summary>
+        /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="getMaxConcurrentRequests">A delegate to retrieve the maximum number of concurrent requests. Allows you
+        /// to supply different values at runtime. Use 0 or a negative number to specify unlimited number of concurrent requests.</param>
+        /// <returns></returns>
+        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, Func<TimeSpan> getMaxConcurrentRequests)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException("builder");
+            }
+            return builder.Use<ConnectionTimeoutMiddleware>(getMaxConcurrentRequests);
+        }
     }
 }

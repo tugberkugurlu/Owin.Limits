@@ -58,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MaxBandwidthMiddleware.cs" />
     <Compile Include="ThrottleStream.cs" />
+    <Compile Include="TimeoutStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Owin.Limits.nuspec" />
