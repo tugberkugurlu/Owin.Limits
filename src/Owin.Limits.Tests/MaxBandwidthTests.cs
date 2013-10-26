@@ -6,8 +6,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using Microsoft.Owin.Infrastructure;
-    using Owin.Testing;
+    using Microsoft.Owin.Testing;
     using Xunit;
 
     public class MaxBandwidthTests
@@ -18,7 +17,7 @@
             var bandwidth = 0;
             // ReSharper disable once AccessToModifiedClosure - yeah we want to modify it...
             Func<int> getMaxBandwidth = () => bandwidth;
-            HttpClient httpClient = CreateTestServer(getMaxBandwidth).CreateHttpClient();
+            HttpClient httpClient = CreateHttpClient(getMaxBandwidth);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -35,23 +34,19 @@
             limitedTimeSpan.Should().BeGreaterThan(nolimitTimeSpan);
         }
 
-        private static OwinTestServer CreateTestServer(Func<int> getMaxBytesPerSecond)
+        private static HttpClient CreateHttpClient(Func<int> getMaxBytesPerSecond)
         {
-            return OwinTestServer.Create(builder =>
-            {
-                SignatureConversions.AddConversions(builder); // supports Microsoft.Owin.OwinMiddleWare
-                builder
-                    .MaxBandwidth(getMaxBytesPerSecond)
-                    .Use(async context =>
-                    {
-                        byte[] bytes = Enumerable.Repeat((byte)0x1, 3).ToArray();
-                        context.Response.StatusCode = 200;
-                        context.Response.ReasonPhrase = "OK";
-                        context.Response.ContentLength = bytes.LongLength;
-                        context.Response.ContentType = "application/octet-stream";
-                        await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
-                    });
-            });
+	        return TestServer.Create(builder => builder
+		                                            .MaxBandwidth(getMaxBytesPerSecond)
+		                                            .Use(async (context, _) =>
+		                                            {
+			                                            byte[] bytes = Enumerable.Repeat((byte) 0x1, 3).ToArray();
+			                                            context.Response.StatusCode = 200;
+			                                            context.Response.ReasonPhrase = "OK";
+			                                            context.Response.ContentLength = bytes.LongLength;
+			                                            context.Response.ContentType = "application/octet-stream";
+			                                            await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+		                                            })).HttpClient;
         }
     }
 }
