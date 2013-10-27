@@ -34,23 +34,23 @@
             {
                 maxConcurrentRequests = int.MaxValue;
             }
-	        try
-	        {
-		        int concurrentRequests = Interlocked.Increment(ref _concurrentRequests);
-		        if (concurrentRequests > maxConcurrentRequests)
-		        {
-			        var conext = new OwinContext(environment);
-			        conext.Response.StatusCode = 503;
-			        conext.Response.ReasonPhrase = "Service Unavailable";
-			        Interlocked.Decrement(ref _concurrentRequests);
-			        return;
-		        }
-		        await _next(environment);
-	        }
-	        finally
-	        {
-		        Interlocked.Decrement(ref _concurrentRequests);
-	        }
+            try
+            {
+                int concurrentRequests = Interlocked.Increment(ref _concurrentRequests);
+                if (concurrentRequests > maxConcurrentRequests)
+                {
+                    var conext = new OwinContext(environment);
+                    conext.Response.StatusCode = 503;
+                    conext.Response.ReasonPhrase = "Service Unavailable";
+                    Interlocked.Decrement(ref _concurrentRequests);
+                    return;
+                }
+                await _next(environment);
+            }
+            finally
+            {
+                Interlocked.Decrement(ref _concurrentRequests);
+            }
         }
     }
 }
