@@ -5,7 +5,6 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using Microsoft.Owin.Infrastructure;
     using Microsoft.Owin.Testing;
     using Xunit;
 
