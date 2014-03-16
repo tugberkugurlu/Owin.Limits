@@ -91,5 +91,29 @@ namespace Owin
             }
             return builder.Use<ConnectionTimeoutMiddleware>(getTimeout);
         }
+
+
+        /// <summary>
+        /// Maximums the length of the query string.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="maxQueryStringLength">Maximum length of the query string.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, int maxQueryStringLength) {
+            return MaxQueryStringLength(builder, () => maxQueryStringLength);
+        }
+        /// <summary>
+        /// Maximums the length of the query string.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="getMaxQueryStringLength">A delegate to get the maximum query string length.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder</exception>
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, Func<int> getMaxQueryStringLength) {
+            if (builder == null) {
+                throw new ArgumentNullException("builder");
+            }
+            return builder.Use<MaxQueryStringMiddleware>(getMaxQueryStringLength);
+        }
     }
 }
