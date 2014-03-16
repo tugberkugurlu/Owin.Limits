@@ -42,7 +42,6 @@
                     var conext = new OwinContext(environment);
                     conext.Response.StatusCode = 503;
                     conext.Response.ReasonPhrase = "Service Unavailable";
-                    Interlocked.Decrement(ref _concurrentRequests);
                     return;
                 }
                 await _next(environment);
