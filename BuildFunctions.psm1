@@ -23,7 +23,6 @@ function Update-Version
 	$tmpFile = $assemblyInfoFilePath + ".tmp"
 
 	Get-Content $assemblyInfoFilePath | 
-		%{$_ -replace 'AssemblyVersion\("[0-9]+(\.([0-9]+|\*)){1,3}"\)', $newVersion } |
 		%{$_ -replace 'AssemblyFileVersion\("[0-9]+(\.([0-9]+|\*)){1,3}"\)', $newFileVersion }  | Out-File -Encoding UTF8 $tmpFile
 
 	Move-Item $tmpFile $assemblyInfoFilePath -force

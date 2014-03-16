@@ -29,7 +29,7 @@ task Compile {
 
 task RunTests -depends Compile {
 	$xunitRunner = "$srcDir\packages\xunit.runners.1.9.2\tools\xunit.console.clr4.exe"
-	Get-ChildItem . -Recurse -Include *Tests.csproj, Tests.*.csproj | % {
+	gci . -Recurse -Include *Tests.csproj, Tests.*.csproj | % {
 		$project = $_.BaseName
 		if(!(Test-Path $reportsDir\xUnit\$project)){
 			New-Item $reportsDir\xUnit\$project -Type Directory
@@ -51,7 +51,9 @@ task CopyBuildOutput -depends Compile {
 }
 
 task CreateNuGetPackages -depends CopyBuildOutput {
-	$packageVersion = Get-Version $assemblyInfoFilePath
+	$versionString = Get-Version $assemblyInfoFilePath
+	$version = New-Object Version $versionString
+	$packageVersion = $version.Major.ToString() + "." + $version.Minor.ToString() + "." + $version.Build.ToString()
 	copy-item $srcDir\$projectName\$projectName.nuspec $buildOutputDir
 	exec { .$srcDir\packages\Midori.0.8.0.0\tools\nuget.exe pack $buildOutputDir\$projectName.nuspec -BasePath $buildOutputDir -o $buildOutputDir -version $packageVersion }
 }
