@@ -9,10 +9,10 @@ Implemented:
  - Max bandwidth
  - Max concurrent requests
  - Connection timeout
+ - Max query string
  
 TODO:
  - MaxAllowedContentLength
- - MaxQueryString (enforced by hosts?)
  - MaxUrl (enforced by hosts?)
  - (Header limits)?
 
