@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 
 namespace Owin.Limits {
-    internal class MaxQueryStringMiddleware {
+    internal class MaxQueryStringLengthMiddleware {
         private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly Func<int> _getMaxQueryStringLength;
 
-        public MaxQueryStringMiddleware(Func<IDictionary<string, object>, Task> next, Func<int> getMaxQueryStringLength) {
+        public MaxQueryStringLengthMiddleware(Func<IDictionary<string, object>, Task> next, Func<int> getMaxQueryStringLength) {
             if (next == null) {
                 throw new ArgumentNullException("next");
             }

@@ -113,7 +113,7 @@ namespace Owin
             if (builder == null) {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<MaxQueryStringMiddleware>(getMaxQueryStringLength);
+            return builder.Use<MaxQueryStringLengthMiddleware>(getMaxQueryStringLength);
         }
     }
 }
