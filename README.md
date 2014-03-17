@@ -30,6 +30,8 @@ public class Startup
             .MaxBandwidth(10000) //bps
             .MaxConcurrentRequests(10)
             .ConnectionTimeout(TimeSpan.FromSeconds(10))
+			.MaxQueryStringLength(15) //Unescaped QueryString
+			.MaxRequestContentLength(15)
             .UseEtc(..);
             
         //dynamic settings
@@ -37,6 +39,8 @@ public class Startup
             .MaxBandwidth(() => 10000) //bps
             .MaxConcurrentRequests(() => 10)
             .ConnectionTimeout(() => TimeSpan.FromSeconds(10))
+			.MaxQueryStringLength(() => 15)
+			.MaxRequestContentLength(() => 15)
             .UseEtc(..);
     }
 }
