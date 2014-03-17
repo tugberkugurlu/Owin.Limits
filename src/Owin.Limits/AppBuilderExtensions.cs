@@ -115,5 +115,28 @@ namespace Owin
             }
             return builder.Use<MaxQueryStringLengthMiddleware>(getMaxQueryStringLength);
         }
+
+        /// <summary>
+        /// Maximums the length of the request content.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="maxContentLength">Maximum length of the content.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, int maxContentLength) {
+            return MaxRequestContentLength(builder, () => maxContentLength);
+        }
+        /// <summary>
+        /// Maximums the length of the request content.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="getMaxContentLength">A delegate to get the maximum content length.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder</exception>
+        public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, Func<int> getMaxContentLength) {
+            if (builder == null) {
+                throw new ArgumentNullException("builder");
+            }
+            return builder.Use<MaxRequestContentLengthMiddleware>(getMaxContentLength);
+        }
     }
 }
