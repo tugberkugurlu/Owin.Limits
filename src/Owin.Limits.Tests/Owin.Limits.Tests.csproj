@@ -69,7 +69,9 @@
     <Compile Include="ConnectionTimeoutTests.cs" />
     <Compile Include="MaxConcurrentRequestsTests.cs" />
     <Compile Include="MaxBandwidthTests.cs" />
+    <Compile Include="MaxContentLengthMiddlewareTests.cs" />
     <Compile Include="MaxQueryStringTests.cs" />
+    <Compile Include="MaxUrlLengthTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,9 +14,9 @@
         {
             HttpClient client = CreateClient(10);
 
-            HttpResponseMessage request = await client.GetAsync("http://example.com?q=1234567");
+            HttpResponseMessage response = await client.GetAsync("http://example.com?q=1234567");
 
-            request.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         [Fact]
@@ -24,10 +24,10 @@
         {
             HttpClient client = CreateClient(10);
 
-            HttpResponseMessage request = await client.GetAsync("http://example.com?q=123456789");
+            HttpResponseMessage response = await client.GetAsync("http://example.com?q=123456789");
 
-            request.StatusCode.Should().Be(HttpStatusCode.RequestUriTooLong);
-            request.ReasonPhrase.Should().Be("The (unescaped) querystring is too long. Only 10 characters are allowed.");
+            response.StatusCode.Should().Be(HttpStatusCode.RequestUriTooLong);
+            response.ReasonPhrase.Should().Be("The (unescaped) querystring is too long. Only 10 characters are allowed.");
         }
 
         [Fact]
@@ -37,9 +37,9 @@
         {
             HttpClient client = CreateClient(10);
 
-            HttpResponseMessage request = await client.GetAsync("http://example.com?q=%48%49%50%51%52%53%54");
+            HttpResponseMessage response = await client.GetAsync("http://example.com?q=%48%49%50%51%52%53%54");
 
-            request.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
 
