@@ -138,5 +138,28 @@ namespace Owin
             }
             return builder.Use<MaxRequestContentLengthMiddleware>(getMaxContentLength);
         }
+
+        /// <summary>
+        /// Maximums the length of the URL.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="maxUrlLength">Maximum length of the URL.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        public static IAppBuilder MaxUrlLength(this IAppBuilder builder, int maxUrlLength) {
+            return MaxUrlLength(builder, () => maxUrlLength);
+        }
+        /// <summary>
+        /// Maximums the length of the URL.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="getMaxUrlLength">A delegate to get the maximum URL length.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder</exception>
+        public static IAppBuilder MaxUrlLength(this IAppBuilder builder, Func<int> getMaxUrlLength) {
+            if (builder == null) {
+                throw new ArgumentNullException("builder");
+            }
+            return builder.Use<MaxUrlLengthMiddleware>(getMaxUrlLength);
+        }
     }
 }

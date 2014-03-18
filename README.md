@@ -11,9 +11,9 @@ Implemented:
  - Connection timeout
  - Max query string
  - Max request content length
+ - Max url length
  
 TODO:
- - MaxUrl (enforced by hosts?)
  - (Header limits)?
 
 Example
@@ -30,8 +30,9 @@ public class Startup
             .MaxBandwidth(10000) //bps
             .MaxConcurrentRequests(10)
             .ConnectionTimeout(TimeSpan.FromSeconds(10))
-			.MaxQueryStringLength(15) //Unescaped QueryString
-			.MaxRequestContentLength(15)
+            .MaxQueryStringLength(15) //Unescaped QueryString
+            .MaxRequestContentLength(15)
+            .MaxUrlLength(20)
             .UseEtc(..);
             
         //dynamic settings
@@ -39,8 +40,9 @@ public class Startup
             .MaxBandwidth(() => 10000) //bps
             .MaxConcurrentRequests(() => 10)
             .ConnectionTimeout(() => TimeSpan.FromSeconds(10))
-			.MaxQueryStringLength(() => 15)
-			.MaxRequestContentLength(() => 15)
+            .MaxQueryStringLength(() => 15)
+            .MaxRequestContentLength(() => 15)
+            .MaxUrlLength(() => 20)
             .UseEtc(..);
     }
 }
