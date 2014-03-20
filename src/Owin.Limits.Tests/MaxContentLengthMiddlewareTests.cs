@@ -12,15 +12,15 @@
         [Fact]
         public async Task When_max_contentLength_is_20_and_a_get_request_is_coming_it_should_be_served() {
             var requestBuilder = CreateRequest(20);
-            
+
             HttpResponseMessage response = await requestBuilder.GetAsync();
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
-        
+
 
         [Fact]
-        public async Task When_max_contentLength_is_20_and_a_get_request_with_contentLength_header_is_coming_then_the_header_should_be_ignored_and_the_request_served() { 
+        public async Task When_max_contentLength_is_20_and_a_get_request_with_contentLength_header_is_coming_then_the_header_should_be_ignored_and_the_request_served() {
             var requestBuilder = CreateRequest(20);
             AddContentLengthHeader(requestBuilder, 10);
 
@@ -30,7 +30,7 @@
         }
 
         [Fact]
-        public async Task When_max_contentLength_is_20_and_a_head_request_is_comig_it_should_be_served() { 
+        public async Task When_max_contentLength_is_20_and_a_head_request_is_comig_it_should_be_served() {
             var requestBuilder = CreateRequest(20);
 
             HttpResponseMessage response = await requestBuilder.SendAsync("HEAD");
@@ -134,13 +134,7 @@
                 req.Headers.TransferEncodingChunked = true;
             });
 
-            HttpResponseMessage response = null;
-            try {
-                response = await request.PostAsync();
-            } catch (Exception exc) {
-                var tmp = exc.Message;
-            }
-            
+            HttpResponseMessage response = await request.PostAsync();
 
             response.StatusCode.Should().Be(HttpStatusCode.RequestEntityTooLarge);
             response.ReasonPhrase.Should().Be("The content is too large. It is only a value of 2 allowed.");
@@ -157,7 +151,7 @@
                     context.Response.ReasonPhrase = "OK";
                 }));
             var request = server.CreateRequest("http://example.com");
-            
+
             return request;
         }
 
