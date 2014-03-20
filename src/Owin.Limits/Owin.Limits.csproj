@@ -54,6 +54,8 @@
     </Compile>
     <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="ConnectionTimeoutMiddleware.cs" />
+    <Compile Include="ContentLengthExceededException.cs" />
+    <Compile Include="ContentLengthLimitingStream.cs" />
     <Compile Include="MaxConcurrentRequestsMiddleware.cs" />
     <Compile Include="MaxRequestContentLengthMiddleware.cs" />
     <Compile Include="MaxQueryStringLengthMiddleware.cs" />

@@ -29,7 +29,12 @@
             var request = context.Request;
             var requestMethod = request.Method.Trim().ToUpper();
 
-            if (requestMethod != "GET" && requestMethod != "HEAD") {
+            if (requestMethod == "GET" || requestMethod == "HEAD") {
+                await _next(environment);
+                return;
+            }
+            var maxContentLength = _getMaxContentLength();
+            if (!IsChunkedRequest(request)) {
                 var contentLengthHeaderValue = request.Headers.Get("Content-Length");
                 if (contentLengthHeaderValue == null) {
                     context.Response.StatusCode = 411;
@@ -42,15 +47,32 @@
                     context.Response.ReasonPhrase = "The Content-Length header value is not a valid number.";
                     return;
                 }
-                var maxContentLength = _getMaxContentLength();
-
                 if (contentLength > maxContentLength) {
                     context.Response.StatusCode = 413;
                     context.Response.ReasonPhrase = string.Format("The content is too large. It is only a value of {0} allowed.", maxContentLength);
                     return;
                 }
             }
-            await _next(environment);
+
+            request.Body = new ContentLengthLimitingStream(request.Body, maxContentLength);
+
+            await _next(environment).ContinueWith(parent => {
+                parent.Exception.Flatten().Handle(exc => {
+                    if (exc is ContentLengthExceededException) {
+                        context.Response.StatusCode = 413;
+                        context.Response.ReasonPhrase = string.Format("The content is too large. It is only a value of {0} allowed.", maxContentLength);
+                        return true;
+                    }
+                    return false;
+                });
+            }, TaskContinuationOptions.OnlyOnFaulted);
+        }
+        private static bool IsChunkedRequest(IOwinRequest request) {
+            var header = request.Headers.Get("Transfer-Encoding");
+            if (header == null) {
+                return false;
+            }
+            return header.Equals("chunked", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
