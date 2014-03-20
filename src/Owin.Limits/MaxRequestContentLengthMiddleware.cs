@@ -56,16 +56,12 @@
 
             request.Body = new ContentLengthLimitingStream(request.Body, maxContentLength);
 
-            await _next(environment).ContinueWith(parent => {
-                parent.Exception.Flatten().Handle(exc => {
-                    if (exc is ContentLengthExceededException) {
-                        context.Response.StatusCode = 413;
-                        context.Response.ReasonPhrase = string.Format("The content is too large. It is only a value of {0} allowed.", maxContentLength);
-                        return true;
-                    }
-                    return false;
-                });
-            }, TaskContinuationOptions.OnlyOnFaulted);
+            try {
+                await _next(environment);
+            } catch (ContentLengthExceededException) {
+                context.Response.StatusCode = 413;
+                context.Response.ReasonPhrase = string.Format("The content is too large. It is only a value of {0} allowed.", maxContentLength);
+            }
         }
         private static bool IsChunkedRequest(IOwinRequest request) {
             var header = request.Headers.Get("Transfer-Encoding");

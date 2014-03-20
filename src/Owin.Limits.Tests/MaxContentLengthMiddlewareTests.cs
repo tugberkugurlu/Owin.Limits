@@ -1,4 +1,6 @@
 ﻿namespace Owin.Limits {
+    using System;
+    using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -123,11 +125,34 @@
             response.ReasonPhrase.Should().Be("The Content-Length header value is not a valid number.");
         }
 
+        [Fact]
+        public async Task When_max_contentLength_is_2_and_the_request_is_chunked_and_longer_it_should_be_rejected() {
+            var request = CreateRequest(2);
+
+            request.And(req => {
+                req.Content = new StringContent("4\r\nWiki\r\n5\r\npedia\r\ne\r\nin\r\n\r\nchunks.\r\n0\r\n\r\n");
+                req.Headers.TransferEncodingChunked = true;
+            });
+
+            HttpResponseMessage response = null;
+            try {
+                response = await request.PostAsync();
+            } catch (Exception exc) {
+                var tmp = exc.Message;
+            }
+            
+
+            response.StatusCode.Should().Be(HttpStatusCode.RequestEntityTooLarge);
+            response.ReasonPhrase.Should().Be("The content is too large. It is only a value of 2 allowed.");
+        }
+
 
         private static RequestBuilder CreateRequest(int maxContentLength) {
             var server = TestServer.Create(builder => builder
                 .MaxRequestContentLength(maxContentLength)
                 .Use(async (context, _) => {
+                    await new StreamReader(context.Request.Body).ReadToEndAsync();
+                    await new StreamWriter(context.Response.Body).WriteAsync("Lorem ipsum");
                     context.Response.StatusCode = 200;
                     context.Response.ReasonPhrase = "OK";
                 }));
