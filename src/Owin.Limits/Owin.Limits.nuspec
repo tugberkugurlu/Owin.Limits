@@ -14,6 +14,9 @@
         <dependencies>
             <dependency id="Owin" version="1.0"/>
         </dependencies>
+		<releaseNotes>
+			Add support for MaxRequestContentLength
+		</releaseNotes>
     </metadata>
     <files>
         <file src="bin\Owin.Limits\net45\Owin.Limits.dll" target="lib\net45" />
