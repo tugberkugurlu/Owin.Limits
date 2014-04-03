@@ -5,7 +5,7 @@
         <version>0.0.0.0</version>
         <authors>Damian Hickey</authors>
         <owners>Damian Hickey</owners>
-        <projectUrl>https://github.com/damianh/Owin.Limits</projectUrl>
+        <projectUrl>https://github.com/owin-middleware/Owin.Limits</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Owin.Limits</title>
         <description>OWIN Middleware that applies limits to an OWIN pipeline. Currently supported are max bandwidth, max concurrent requests and connection timeout.</description>
