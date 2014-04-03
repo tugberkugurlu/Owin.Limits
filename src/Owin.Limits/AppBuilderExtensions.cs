@@ -1,4 +1,5 @@
 ﻿// ReSharper disable CheckNamespace
+
 namespace Owin
 // ReSharper restore CheckNamespace
 {
@@ -94,69 +95,81 @@ namespace Owin
 
 
         /// <summary>
-        /// Maximums the length of the query string.
+        /// Limits the length of the query string.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="maxQueryStringLength">Maximum length of the query string.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, int maxQueryStringLength) {
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, int maxQueryStringLength)
+        {
             return MaxQueryStringLength(builder, () => maxQueryStringLength);
         }
+
         /// <summary>
-        /// Maximums the length of the query string.
+        /// Limits the length of the query string.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="getMaxQueryStringLength">A delegate to get the maximum query string length.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, Func<int> getMaxQueryStringLength) {
-            if (builder == null) {
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, Func<int> getMaxQueryStringLength)
+        {
+            if (builder == null)
+            {
                 throw new ArgumentNullException("builder");
             }
             return builder.Use<MaxQueryStringLengthMiddleware>(getMaxQueryStringLength);
         }
 
         /// <summary>
-        /// Maximums the length of the request content.
+        /// Limits the length of the request content.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="maxContentLength">Maximum length of the content.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, int maxContentLength) {
+        public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, int maxContentLength)
+        {
             return MaxRequestContentLength(builder, () => maxContentLength);
         }
+
         /// <summary>
-        /// Maximums the length of the request content.
+        /// Limites the length of the request content.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="getMaxContentLength">A delegate to get the maximum content length.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, Func<int> getMaxContentLength) {
-            if (builder == null) {
+        public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, Func<int> getMaxContentLength)
+        {
+            if (builder == null)
+            {
                 throw new ArgumentNullException("builder");
             }
             return builder.Use<MaxRequestContentLengthMiddleware>(getMaxContentLength);
         }
 
         /// <summary>
-        /// Maximums the length of the URL.
+        /// Limits the length of the URL.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="maxUrlLength">Maximum length of the URL.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        public static IAppBuilder MaxUrlLength(this IAppBuilder builder, int maxUrlLength) {
+        public static IAppBuilder MaxUrlLength(this IAppBuilder builder, int maxUrlLength)
+        {
             return MaxUrlLength(builder, () => maxUrlLength);
         }
+
         /// <summary>
-        /// Maximums the length of the URL.
+        /// Limits the length of the URL.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="getMaxUrlLength">A delegate to get the maximum URL length.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public static IAppBuilder MaxUrlLength(this IAppBuilder builder, Func<int> getMaxUrlLength) {
-            if (builder == null) {
+        public static IAppBuilder MaxUrlLength(this IAppBuilder builder, Func<int> getMaxUrlLength)
+        {
+            if (builder == null)
+            {
                 throw new ArgumentNullException("builder");
             }
             return builder.Use<MaxUrlLengthMiddleware>(getMaxUrlLength);
