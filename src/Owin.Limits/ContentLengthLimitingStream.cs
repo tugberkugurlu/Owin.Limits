@@ -1,19 +1,17 @@
-﻿namespace Owin.Limits {
+﻿namespace Owin.Limits
+{
     using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
+    // Template from http://forums.asp.net/t/1966232.aspx?Web+API+OWIN+Host+Limit+Request+Size
 
-    /*
-     * Template from http://forums.asp.net/t/1966232.aspx?Web+API+OWIN+Host+Limit+Request+Size
-     * 
-     */
-
-    internal class ContentLengthLimitingStream : Stream {
+    internal class ContentLengthLimitingStream : Stream
+    {
         private readonly Stream _innerStream;
-        private long _totalBytesReadCount = 0;
-        private readonly long _maxRequestSizeInBytes = 0;
+        private readonly long _maxRequestSizeInBytes;
+        private long _totalBytesReadCount;
 
         public ContentLengthLimitingStream(Stream innerStream, long maxReceivedMessageSize)
         {
@@ -92,7 +90,8 @@
             return currentNumberOfBytesRead;
         }
 
-        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count,
+            CancellationToken cancellationToken)
         {
             int currentNumberOfBytesRead = await _innerStream.ReadAsync(buffer, offset, count, cancellationToken);
 
@@ -177,6 +176,6 @@
             {
                 throw new ContentLengthExceededException(string.Format("Request size exceeds the allowed maximum size of {0} bytes", _maxRequestSizeInBytes));
             }
-        } 
+        }
     }
 }
