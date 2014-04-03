@@ -1,11 +1,9 @@
 Owin.Limits
 ===========
 
-OWIN middleware to apply limits to an OWIN pipeline.
+OWIN middleware to apply limits to an OWIN pipeline. Install via [nuget].
 
-Install via [nuget].
-
-Implemented:
+#### Implemented:
  - Max bandwidth
  - Max concurrent requests
  - Connection timeout
@@ -13,10 +11,11 @@ Implemented:
  - Max request content length
  - Max url length
  
-TODO:
- - (Header limits)?
+#### TODO:
+ - Header limits?
+ - Per request limits
 
-Example
+#### Examples
 
 Configuration values can be supplied as constants or with a delegate. The latter allows you to change the values at runtime, however you see fit.
 
@@ -25,7 +24,7 @@ public class Startup
 {
     public void Configuration(IAppBuilder builder)
     {
-        //Constant settings
+        //static settings
         builder
             .MaxBandwidth(10000) //bps
             .MaxConcurrentRequests(10)
@@ -48,9 +47,13 @@ public class Startup
 }
 ```
 
-Pull requests gratefully accepted.
 
 Questions or suggestions? Create an issue or [@randompunter] on twitter.
+
+Pull requests gratefully accepted.
+
+Thanks to the follow contributors!
+ - [Stefan Ossendorf](https://github.com/StefanOssendorf) ([@Pherenetic](https://twitter.com/Pherenetic))
 
 [nuget]: https://www.nuget.org/packages/Owin.Limits
 [@randompunter]: http://twitter.com/randompunter
