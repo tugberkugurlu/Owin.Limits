@@ -14,8 +14,8 @@
         public async Task When_max_concurrent_request_is_1_then_second_request_should_get_service_unavailable()
         {
             var httpClient = CreateHttpClient(1);
-			Task<HttpResponseMessage> request1 = httpClient.GetAsync("http://example.com");
-			Task<HttpResponseMessage> request2 = httpClient.GetAsync("http://example.com");
+            Task<HttpResponseMessage> request1 = httpClient.GetAsync("http://example.com");
+            Task<HttpResponseMessage> request2 = httpClient.GetAsync("http://example.com");
 
             await Task.WhenAll(request1, request2);
 
@@ -51,18 +51,18 @@
 
         private static HttpClient CreateHttpClient(int maxConcurrentRequests)
         {
-	        return TestServer.Create(builder => builder
-		                                            .MaxBandwidth(1)
-		                                            .MaxConcurrentRequests(maxConcurrentRequests)
-		                                            .Use(async (context, _) =>
-		                                            {
-			                                            byte[] bytes = Enumerable.Repeat((byte) 0x1, 2).ToArray();
-			                                            context.Response.StatusCode = 200;
-			                                            context.Response.ReasonPhrase = "OK";
-			                                            context.Response.ContentLength = bytes.LongLength;
-			                                            context.Response.ContentType = "application/octet-stream";
-			                                            await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
-		                                            })).HttpClient;
+            return TestServer.Create(builder => builder
+                .MaxBandwidth(1)
+                .MaxConcurrentRequests(maxConcurrentRequests)
+                .Use(async (context, _) =>
+                {
+                    byte[] bytes = Enumerable.Repeat((byte) 0x1, 2).ToArray();
+                    context.Response.StatusCode = 200;
+                    context.Response.ReasonPhrase = "OK";
+                    context.Response.ContentLength = bytes.LongLength;
+                    context.Response.ContentType = "application/octet-stream";
+                    await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+                })).HttpClient;
         }
     }
 }

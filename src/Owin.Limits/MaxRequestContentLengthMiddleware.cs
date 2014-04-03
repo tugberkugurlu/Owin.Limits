@@ -28,6 +28,7 @@
         }
 
 
+        [UsedImplicitly]
         public async Task Invoke(IDictionary<string, object> environment)
         {
             if (environment == null)
@@ -51,20 +52,17 @@
                 if (contentLengthHeaderValue == null)
                 {
                     context.Response.StatusCode = 411;
-                    context.Response.ReasonPhrase = "The Content-Length header is missing.";
                     return;
                 }
                 int contentLength;
                 if (!int.TryParse(contentLengthHeaderValue, out contentLength))
                 {
                     context.Response.StatusCode = 400;
-                    context.Response.ReasonPhrase = "The Content-Length header value is not a valid number.";
                     return;
                 }
                 if (contentLength > maxContentLength)
                 {
                     context.Response.StatusCode = 413;
-                    context.Response.ReasonPhrase = string.Format("The content is too large. It is only a value of {0} allowed.", maxContentLength);
                     return;
                 }
             }
@@ -78,7 +76,6 @@
             catch (ContentLengthExceededException)
             {
                 context.Response.StatusCode = 413;
-                context.Response.ReasonPhrase = string.Format("The content is too large. It is only a value of {0} allowed.", maxContentLength);
             }
         }
 

@@ -24,6 +24,7 @@
             _getMaxConcurrentRequests = getMaxConcurrentRequests;
         }
 
+        [UsedImplicitly]
         public async Task Invoke(IDictionary<string, object> environment)
         {
             if (environment == null)
@@ -43,7 +44,6 @@
                 {
                     var conext = new OwinContext(environment);
                     conext.Response.StatusCode = 503;
-                    conext.Response.ReasonPhrase = "Service Unavailable";
                     return;
                 }
                 await _next(environment);

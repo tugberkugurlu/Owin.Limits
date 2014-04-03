@@ -64,7 +64,6 @@
             HttpResponseMessage response = await requestBuilder.PostAsync();
 
             response.StatusCode.Should().Be(HttpStatusCode.RequestEntityTooLarge);
-            response.ReasonPhrase.Should().Be("The content is too large. It is only a value of 20 allowed.");
         }
 
         [Fact]
@@ -123,7 +122,6 @@
             HttpResponseMessage response = await requestBuilder.PostAsync();
 
             response.StatusCode.Should().Be(HttpStatusCode.LengthRequired);
-            response.ReasonPhrase.Should().Be("The Content-Length header is missing.");
         }
 
         [Fact]
@@ -135,7 +133,6 @@
             HttpResponseMessage response = await requestBuilder.PostAsync();
 
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            response.ReasonPhrase.Should().Be("The Content-Length header value is not a valid number.");
         }
 
         [Fact]
@@ -152,7 +149,6 @@
             HttpResponseMessage response = await request.PostAsync();
 
             response.StatusCode.Should().Be(HttpStatusCode.RequestEntityTooLarge);
-            response.ReasonPhrase.Should().Be("The content is too large. It is only a value of 2 allowed.");
         }
 
 

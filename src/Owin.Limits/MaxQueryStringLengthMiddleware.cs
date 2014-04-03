@@ -28,6 +28,7 @@
             _getMaxQueryStringLength = getMaxQueryStringLength;
         }
 
+        [UsedImplicitly]
         public async Task Invoke(IDictionary<string, object> environment)
         {
             if (environment == null)
@@ -44,9 +45,6 @@
                 if (unescapedQueryString.Length > maxQueryStringLength)
                 {
                     context.Response.StatusCode = 414;
-                    context.Response.ReasonPhrase =
-                        string.Format("The (unescaped) querystring is too long. Only {0} characters are allowed.",
-                            maxQueryStringLength);
                     return;
                 }
             }
