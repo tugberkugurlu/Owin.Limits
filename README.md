@@ -52,7 +52,7 @@ Questions or suggestions? Create an issue or [@randompunter] on twitter.
 
 Pull requests gratefully accepted.
 
-Thanks to the follow contributors!
+Thanks to the following contributors!
  - [Stefan Ossendorf](https://github.com/StefanOssendorf) ([@Pherenetic](https://twitter.com/Pherenetic))
 
 [nuget]: https://www.nuget.org/packages/Owin.Limits
