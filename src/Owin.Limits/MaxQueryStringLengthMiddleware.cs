@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.Owin;
+    using Owin.Limits.Annotations;
 
+    [UsedImplicitly]
     internal class MaxQueryStringLengthMiddleware
     {
         private readonly Func<int> _getMaxQueryStringLength;

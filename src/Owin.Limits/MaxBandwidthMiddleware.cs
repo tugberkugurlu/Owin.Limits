@@ -5,7 +5,9 @@
     using System.IO;
     using System.Threading.Tasks;
     using Microsoft.Owin;
+    using Owin.Limits.Annotations;
 
+    [UsedImplicitly]
     internal class MaxBandwidthMiddleware
     {
         private readonly Func<IDictionary<string, object>, Task> _next;

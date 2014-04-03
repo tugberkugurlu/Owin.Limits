@@ -5,7 +5,9 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Owin;
+    using Owin.Limits.Annotations;
 
+    [UsedImplicitly]
     internal class MaxConcurrentRequestsMiddleware
     {
         private readonly Func<int> _getMaxConcurrentRequests;
