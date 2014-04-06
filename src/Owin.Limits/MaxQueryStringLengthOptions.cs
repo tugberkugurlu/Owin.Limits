@@ -2,7 +2,7 @@
     using System;
 
     /// <summary>
-    /// Otions for limiting the querstring length.
+    /// Options for limiting the querstring length.
     /// </summary>
     public class MaxQueryStringLengthOptions 
     {
