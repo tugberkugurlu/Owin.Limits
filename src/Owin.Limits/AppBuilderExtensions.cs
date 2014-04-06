@@ -6,6 +6,9 @@ namespace Owin
     using System;
     using Owin.Limits;
 
+    /// <summary>
+    /// Provides extension methods to use Owin.Limits middlewares.
+    /// </summary>
     public static class AppBuilderExtensions
     {
         /// <summary>
@@ -112,14 +115,24 @@ namespace Owin
         /// <param name="getMaxQueryStringLength">A delegate to get the maximum query string length.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, Func<int> getMaxQueryStringLength)
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, Func<int> getMaxQueryStringLength) 
         {
-            if (builder == null)
-            {
+            return MaxQueryStringLength(builder, new MaxQueryStringLengthOptions(getMaxQueryStringLength));
+        }
+        /// <summary>
+        /// Limits the length of the query string.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="options">The maxquerystringlength options.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder</exception>
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, MaxQueryStringLengthOptions options) {
+            if (builder == null) {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<MaxQueryStringLengthMiddleware>(getMaxQueryStringLength);
+            return builder.Use<MaxQueryStringLengthMiddleware>(options);
         }
+
 
         /// <summary>
         /// Limits the length of the request content.

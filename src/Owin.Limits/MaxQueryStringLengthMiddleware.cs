@@ -9,23 +9,23 @@
     [UsedImplicitly]
     internal class MaxQueryStringLengthMiddleware
     {
-        private readonly Func<int> _getMaxQueryStringLength;
         private readonly Func<IDictionary<string, object>, Task> _next;
+        private readonly MaxQueryStringLengthOptions _options;
 
         public MaxQueryStringLengthMiddleware(Func<IDictionary<string, object>, Task> next,
-            Func<int> getMaxQueryStringLength)
+            MaxQueryStringLengthOptions options)
         {
             if (next == null)
             {
                 throw new ArgumentNullException("next");
             }
-            if (getMaxQueryStringLength == null)
+            if (options == null)
             {
-                throw new ArgumentNullException("getMaxQueryStringLength");
+                throw new ArgumentNullException("options");
             }
 
             _next = next;
-            _getMaxQueryStringLength = getMaxQueryStringLength;
+            _options = options;
         }
 
         [UsedImplicitly]
@@ -36,15 +36,16 @@
                 throw new ArgumentNullException("environment");
             }
 
-            int maxQueryStringLength = _getMaxQueryStringLength();
             var context = new OwinContext(environment);
             QueryString queryString = context.Request.QueryString;
-            if (queryString.HasValue)
+            if (queryString.HasValue) 
             {
+                int maxQueryStringLength = _options.GetMaxQueryStringLength();
                 string unescapedQueryString = Uri.UnescapeDataString(queryString.Value);
                 if (unescapedQueryString.Length > maxQueryStringLength)
                 {
                     context.Response.StatusCode = 414;
+                    context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(414);
                     return;
                 }
             }

@@ -39,11 +39,23 @@
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
+        [Fact]
+        public async Task When_queryString_exceeds_max_length_then_request_should_be_rejected_with_custom_reasonPhrase() {
+            HttpClient client = CreateClient(5, "custom phrase");
 
-        private static HttpClient CreateClient(int length)
+            HttpResponseMessage response = await client.GetAsync("http://example.com?q=123456");
+
+            response.StatusCode.Should().Be(HttpStatusCode.RequestUriTooLong);
+            response.ReasonPhrase.Should().Be("custom phrase");
+        }
+
+        private static HttpClient CreateClient(int length) {
+            return CreateClient(length, "");
+        }
+        private static HttpClient CreateClient(int length, string reasonPhrase)
         {
             return TestServer.Create(builder => builder
-                .MaxQueryStringLength(length)
+                .MaxQueryStringLength(new MaxQueryStringLengthOptions(length) { LimitReachedReasonPhrase = code => reasonPhrase } )
                 .Use((context, next) =>
                 {
                     context.Response.StatusCode = 200;
