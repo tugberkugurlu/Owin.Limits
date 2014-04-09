@@ -54,8 +54,11 @@
     </Compile>
     <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="ConnectionTimeoutMiddleware.cs" />
+    <Compile Include="ConnectionTimeoutOptions.cs" />
     <Compile Include="ContentLengthExceededException.cs" />
     <Compile Include="ContentLengthLimitingStream.cs" />
+    <Compile Include="DefaultHelper.cs" />
+    <Compile Include="MaxBandwidthOptions.cs" />
     <Compile Include="MaxConcurrentRequestsMiddleware.cs" />
     <Compile Include="MaxQueryStringLengthOptions.cs" />
     <Compile Include="MaxRequestContentLengthMiddleware.cs" />
@@ -64,8 +67,10 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MaxBandwidthMiddleware.cs" />
+    <Compile Include="StringExtension.cs" />
     <Compile Include="ThrottleStream.cs" />
     <Compile Include="TimeoutStream.cs" />
+    <Compile Include="TracerActionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Owin.Limits.nuspec" />

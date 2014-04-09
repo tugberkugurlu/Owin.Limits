@@ -1,6 +1,7 @@
 ﻿namespace Owin.Limits
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -10,15 +11,22 @@
     {
         private readonly Stream _innerStream;
         private readonly TimeSpan _timeout;
-        private Timer _timer;
+        private readonly Action<TraceEventType, string> _tracer;
+        private readonly Timer _timer;
 
-        public TimeoutStream(Stream innerStream, TimeSpan timeout)
+        public TimeoutStream(Stream innerStream, TimeSpan timeout, Action<TraceEventType, string> tracer)
         {
             _innerStream = innerStream;
             _timeout = timeout;
-            _timer = new Timer(_timeout.TotalMilliseconds);
-            _timer.AutoReset = false;
-            _timer.Elapsed += (sender, args) => Close();
+            _tracer = tracer;
+            _timer = new Timer(_timeout.TotalMilliseconds) 
+            {
+                AutoReset = false
+            };
+            _timer.Elapsed += (sender, args) => {
+                tracer.AsInfo("Timeout of {0} reached.".FormattedWith(_timeout));
+                Close();
+            };
             _timer.Start();
         }
 
@@ -104,8 +112,8 @@
 
         private void Reset()
         {
-            Console.WriteLine("Reset");
             _timer.Stop();
+            _tracer.AsVerbose("Timeout timer reseted.");
             _timer.Start();
         }
     }

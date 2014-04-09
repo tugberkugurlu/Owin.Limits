@@ -11,18 +11,22 @@
     internal class MaxBandwidthMiddleware
     {
         private readonly Func<IDictionary<string, object>, Task> _next;
-        private readonly Func<int> _getMaxBytesPerSecond;
+        private readonly MaxBandwidthOptions _options;
 
-        public MaxBandwidthMiddleware(Func<IDictionary<string, object>, Task> next, Func<int> getGetMaxBytesPerSecond)
+        public MaxBandwidthMiddleware(Func<IDictionary<string, object>, Task> next, MaxBandwidthOptions options)
         {
             if (next == null)
             {
                 throw new ArgumentNullException("next");
             }
+            if (options == null) 
+            {
+                throw new ArgumentNullException("options");
+            }
             _next = next;
-            _getMaxBytesPerSecond = getGetMaxBytesPerSecond;
+            _options = options;
         }
-
+        [UsedImplicitly]
         public async Task Invoke(IDictionary<string, object> environment)
         {
             if (environment == null)
@@ -32,7 +36,7 @@
             var context = new OwinContext(environment);
             var requestBodyStream = context.Request.Body ?? Stream.Null;
             var responseBodyStream = context.Response.Body;
-            var maxBytesPerSecond = _getMaxBytesPerSecond();
+            var maxBytesPerSecond = _options.GetMaxBytesPerSecond();
             if (maxBytesPerSecond < 0)
             {
                 maxBytesPerSecond = 0;

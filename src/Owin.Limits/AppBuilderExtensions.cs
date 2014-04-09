@@ -30,13 +30,22 @@ namespace Owin
         /// <param name="getMaxBytesPerSecond">A delegate to retrieve the maximum number of bytes per second to be transferred.
         /// Allows you to supply different values at runtime. Use 0 or a negative number to specify infinite bandwidth.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        public static IAppBuilder MaxBandwidth(this IAppBuilder builder, Func<int> getMaxBytesPerSecond)
+        public static IAppBuilder MaxBandwidth(this IAppBuilder builder, Func<int> getMaxBytesPerSecond) 
         {
-            if (builder == null)
-            {
+            return MaxBandwidth(builder, new MaxBandwidthOptions(getMaxBytesPerSecond));
+        }
+        /// <summary>
+        /// Limits the bandwith used by the subsequent stages in the owin pipeline.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="options">The max bandwith options.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder</exception>
+        public static IAppBuilder MaxBandwidth(this IAppBuilder builder, MaxBandwidthOptions options) {
+            if (builder == null) {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<MaxBandwidthMiddleware>(getMaxBytesPerSecond);
+            return builder.Use<MaxBandwidthMiddleware>(options);
         }
 
         /// <summary>
@@ -89,11 +98,31 @@ namespace Owin
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, Func<TimeSpan> getTimeout)
         {
-            if (builder == null)
+            return ConnectionTimeout(builder, new ConnectionTimeoutOptions(getTimeout));
+        }
+        /// <summary>
+        /// Timeouts the connection if there hasn't been an read read activity on the request body stream or any
+        /// write activity on the response body stream.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="options">The connection timeout options.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// builder
+        /// or
+        /// options
+        /// </exception>
+        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, ConnectionTimeoutOptions options) 
+        {
+            if (builder == null) 
             {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<ConnectionTimeoutMiddleware>(getTimeout);
+            if (options == null) 
+            {
+                throw new ArgumentNullException("options");
+            }
+            return builder.Use<ConnectionTimeoutMiddleware>(options);
         }
 
 
@@ -123,7 +152,7 @@ namespace Owin
         /// Limits the length of the query string.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
-        /// <param name="options">The maxquerystringlength options.</param>
+        /// <param name="options">The max querystring length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
         public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, MaxQueryStringLengthOptions options) {
