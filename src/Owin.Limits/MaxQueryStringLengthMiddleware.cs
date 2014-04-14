@@ -39,18 +39,23 @@
 
             var context = new OwinContext(environment);
             QueryString queryString = context.Request.QueryString;
-            if (queryString.HasValue) {
+            if (queryString.HasValue)
+            {
                 int maxQueryStringLength = _options.GetMaxQueryStringLength();
                 string unescapedQueryString = Uri.UnescapeDataString(queryString.Value);
                 _options.Tracer.AsVerbose("Querystring of request with an unescaped length of {0}".FormattedWith(unescapedQueryString.Length));
-                if (unescapedQueryString.Length > maxQueryStringLength) {
-                    _options.Tracer.AsInfo("Querystring (Length {0}) too long (allowed {1}). Request rejected.".FormattedWith(unescapedQueryString.Length, maxQueryStringLength));
+                if (unescapedQueryString.Length > maxQueryStringLength)
+                {
+                    _options.Tracer.AsInfo("Querystring (Length {0}) too long (allowed {1}). Request rejected.".FormattedWith(unescapedQueryString.Length,
+                        maxQueryStringLength));
                     context.Response.StatusCode = 414;
-                    context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(414);
+                    context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(context.Response.StatusCode);
                     return;
                 }
                 _options.Tracer.AsVerbose("Querystring length check passed.");
-            } else {
+            }
+            else
+            {
                 _options.Tracer.AsVerbose("No querystring.");
             }
 

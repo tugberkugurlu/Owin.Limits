@@ -11,6 +11,8 @@ namespace Owin
     /// </summary>
     public static class AppBuilderExtensions
     {
+        #region max bandwidth
+
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
@@ -30,10 +32,11 @@ namespace Owin
         /// <param name="getMaxBytesPerSecond">A delegate to retrieve the maximum number of bytes per second to be transferred.
         /// Allows you to supply different values at runtime. Use 0 or a negative number to specify infinite bandwidth.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        public static IAppBuilder MaxBandwidth(this IAppBuilder builder, Func<int> getMaxBytesPerSecond) 
+        public static IAppBuilder MaxBandwidth(this IAppBuilder builder, Func<int> getMaxBytesPerSecond)
         {
             return MaxBandwidth(builder, new MaxBandwidthOptions(getMaxBytesPerSecond));
         }
+
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
@@ -41,12 +44,18 @@ namespace Owin
         /// <param name="options">The max bandwith options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public static IAppBuilder MaxBandwidth(this IAppBuilder builder, MaxBandwidthOptions options) {
-            if (builder == null) {
+        public static IAppBuilder MaxBandwidth(this IAppBuilder builder, MaxBandwidthOptions options)
+        {
+            if (builder == null)
+            {
                 throw new ArgumentNullException("builder");
             }
             return builder.Use<MaxBandwidthMiddleware>(options);
         }
+
+        #endregion
+
+        #region max concurrent requests
 
         /// <summary>
         /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
@@ -69,12 +78,36 @@ namespace Owin
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         public static IAppBuilder MaxConcurrentRequests(this IAppBuilder builder, Func<int> getMaxConcurrentRequests)
         {
+            return MaxConcurrentRequests(builder, new MaxConcurrentRequestOptions(getMaxConcurrentRequests));
+        }
+
+        /// <summary>
+        /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="options">The max concurrent request options.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// builder
+        /// or
+        /// options
+        /// </exception>
+        public static IAppBuilder MaxConcurrentRequests(this IAppBuilder builder, MaxConcurrentRequestOptions options)
+        {
             if (builder == null)
             {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<MaxConcurrentRequestsMiddleware>(getMaxConcurrentRequests);
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+            return builder.Use<MaxConcurrentRequestsMiddleware>(options);
         }
+
+        #endregion
+
+        #region connection timeout
 
         /// <summary>
         /// Timeouts the connection if there hasn't been an read read activity on the request body stream or any
@@ -100,6 +133,7 @@ namespace Owin
         {
             return ConnectionTimeout(builder, new ConnectionTimeoutOptions(getTimeout));
         }
+
         /// <summary>
         /// Timeouts the connection if there hasn't been an read read activity on the request body stream or any
         /// write activity on the response body stream.
@@ -112,19 +146,22 @@ namespace Owin
         /// or
         /// options
         /// </exception>
-        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, ConnectionTimeoutOptions options) 
+        public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, ConnectionTimeoutOptions options)
         {
-            if (builder == null) 
+            if (builder == null)
             {
                 throw new ArgumentNullException("builder");
             }
-            if (options == null) 
+            if (options == null)
             {
                 throw new ArgumentNullException("options");
             }
             return builder.Use<ConnectionTimeoutMiddleware>(options);
         }
 
+        #endregion
+
+        #region max query string length
 
         /// <summary>
         /// Limits the length of the query string.
@@ -144,10 +181,11 @@ namespace Owin
         /// <param name="getMaxQueryStringLength">A delegate to get the maximum query string length.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, Func<int> getMaxQueryStringLength) 
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, Func<int> getMaxQueryStringLength)
         {
             return MaxQueryStringLength(builder, new MaxQueryStringLengthOptions(getMaxQueryStringLength));
         }
+
         /// <summary>
         /// Limits the length of the query string.
         /// </summary>
@@ -155,13 +193,18 @@ namespace Owin
         /// <param name="options">The max querystring length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder</exception>
-        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, MaxQueryStringLengthOptions options) {
-            if (builder == null) {
+        public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, MaxQueryStringLengthOptions options)
+        {
+            if (builder == null)
+            {
                 throw new ArgumentNullException("builder");
             }
             return builder.Use<MaxQueryStringLengthMiddleware>(options);
         }
 
+        #endregion
+
+        #region max request content length
 
         /// <summary>
         /// Limits the length of the request content.
@@ -175,7 +218,7 @@ namespace Owin
         }
 
         /// <summary>
-        /// Limites the length of the request content.
+        /// Limits the length of the request content.
         /// </summary>
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="getMaxContentLength">A delegate to get the maximum content length.</param>
@@ -183,12 +226,36 @@ namespace Owin
         /// <exception cref="System.ArgumentNullException">builder</exception>
         public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, Func<int> getMaxContentLength)
         {
+            return MaxRequestContentLength(builder, new MaxRequestContentLengthOptions(getMaxContentLength));
+        }
+
+        /// <summary>
+        /// Limits the length of the request content.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="options">The max request content length options.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// builder
+        /// or
+        /// options
+        /// </exception>
+        public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, MaxRequestContentLengthOptions options)
+        {
             if (builder == null)
             {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<MaxRequestContentLengthMiddleware>(getMaxContentLength);
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+            return builder.Use<MaxRequestContentLengthMiddleware>(options);
         }
+
+        #endregion
+
+        #region max url length
 
         /// <summary>
         /// Limits the length of the URL.
@@ -210,11 +277,33 @@ namespace Owin
         /// <exception cref="System.ArgumentNullException">builder</exception>
         public static IAppBuilder MaxUrlLength(this IAppBuilder builder, Func<int> getMaxUrlLength)
         {
+            return MaxUrlLength(builder, new MaxUrlLengthOptions(getMaxUrlLength));
+        }
+
+        /// <summary>
+        /// Limits the length of the URL.
+        /// </summary>
+        /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
+        /// <param name="options">The max url length options.</param>
+        /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// builder
+        /// or
+        /// options
+        /// </exception>
+        public static IAppBuilder MaxUrlLength(this IAppBuilder builder, MaxUrlLengthOptions options)
+        {
             if (builder == null)
             {
                 throw new ArgumentNullException("builder");
             }
-            return builder.Use<MaxUrlLengthMiddleware>(getMaxUrlLength);
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+            return builder.Use<MaxUrlLengthMiddleware>(options);
         }
+
+        #endregion
     }
 }

@@ -11,19 +11,20 @@
     {
         private readonly Stream _innerStream;
         private readonly TimeSpan _timeout;
-        private readonly Action<TraceEventType, string> _tracer;
         private readonly Timer _timer;
+        private readonly Action<TraceEventType, string> _tracer;
 
         public TimeoutStream(Stream innerStream, TimeSpan timeout, Action<TraceEventType, string> tracer)
         {
             _innerStream = innerStream;
             _timeout = timeout;
             _tracer = tracer;
-            _timer = new Timer(_timeout.TotalMilliseconds) 
+            _timer = new Timer(_timeout.TotalMilliseconds)
             {
                 AutoReset = false
             };
-            _timer.Elapsed += (sender, args) => {
+            _timer.Elapsed += (sender, args) =>
+            {
                 tracer.AsInfo("Timeout of {0} reached.".FormattedWith(_timeout));
                 Close();
             };

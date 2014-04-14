@@ -10,18 +10,22 @@
     [UsedImplicitly]
     internal class MaxConcurrentRequestsMiddleware
     {
-        private readonly Func<int> _getMaxConcurrentRequests;
         private readonly Func<IDictionary<string, object>, Task> _next;
+        private readonly MaxConcurrentRequestOptions _options;
         private int _concurrentRequests;
 
-        public MaxConcurrentRequestsMiddleware(Func<IDictionary<string, object>, Task> next, Func<int> getMaxConcurrentRequests)
+        public MaxConcurrentRequestsMiddleware(Func<IDictionary<string, object>, Task> next, MaxConcurrentRequestOptions options)
         {
             if (next == null)
             {
                 throw new ArgumentNullException("next");
             }
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
             _next = next;
-            _getMaxConcurrentRequests = getMaxConcurrentRequests;
+            _options = options;
         }
 
         [UsedImplicitly]
@@ -31,27 +35,41 @@
             {
                 throw new ArgumentNullException("environment");
             }
+            _options.Tracer.AsVerbose("Start processing.");
 
-            int maxConcurrentRequests = _getMaxConcurrentRequests();
-            if (maxConcurrentRequests <= 0)
-            {
-                maxConcurrentRequests = int.MaxValue;
-            }
+            int maxConcurrentRequests = GetMaxConcurrentRequestLimit();
             try
             {
                 int concurrentRequests = Interlocked.Increment(ref _concurrentRequests);
+                _options.Tracer.AsVerbose("Concurrent counter incremented.");
+                _options.Tracer.AsVerbose("Checking concurrent request #{0}.".FormattedWith(concurrentRequests));
                 if (concurrentRequests > maxConcurrentRequests)
                 {
-                    var conext = new OwinContext(environment);
-                    conext.Response.StatusCode = 503;
+                    _options.Tracer.AsInfo("Limit of {0} exceeded with #{1}. Request rejected.".FormattedWith(maxConcurrentRequests, concurrentRequests));
+                    IOwinResponse response = new OwinContext(environment).Response;
+                    response.StatusCode = 503;
+                    response.ReasonPhrase = _options.LimitReachedReasonPhrase(response.StatusCode);
                     return;
                 }
+                _options.Tracer.AsVerbose("Request forwarded.");
                 await _next(environment);
             }
             finally
             {
                 Interlocked.Decrement(ref _concurrentRequests);
+                _options.Tracer.AsVerbose("Concurrent counter decremented.");
             }
+            _options.Tracer.AsVerbose("Processing finished.");
+        }
+
+        private int GetMaxConcurrentRequestLimit()
+        {
+            int limit = _options.GetMaxConcurrentRequests();
+            if (limit <= 0)
+            {
+                limit = int.MaxValue;
+            }
+            return limit;
         }
     }
 }

@@ -20,13 +20,14 @@
         }
 
         [Fact]
-        public async Task When_max_urlLength_is_20_and_a_url_with_length_39_is_coming_it_should_be_rejected()
+        public async Task When_max_urlLength_is_20_and_a_url_with_length_39_is_coming_it_should_be_rejected_with_custom_reasonPhrase()
         {
             HttpClient client = CreateClient(20);
 
             HttpResponseMessage response = await client.GetAsync("http://example.com/example/example.html");
 
             response.StatusCode.Should().Be(HttpStatusCode.RequestUriTooLong);
+            response.ReasonPhrase.Should().Be("custom phrase");
         }
 
         [Fact]
@@ -43,7 +44,10 @@
         private static HttpClient CreateClient(int length)
         {
             return TestServer.Create(builder => builder
-                .MaxUrlLength(length)
+                .MaxUrlLength(new MaxUrlLengthOptions(length)
+                {
+                    LimitReachedReasonPhrase = code => "custom phrase"
+                })
                 .Use((context, next) =>
                 {
                     context.Response.StatusCode = 200;
