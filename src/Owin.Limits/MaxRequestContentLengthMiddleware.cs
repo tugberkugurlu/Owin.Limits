@@ -27,7 +27,6 @@
             {
                 _options.Tracer.AsVerbose("GET or HEAD request without checking forwarded.");
                 await next(environment);
-                _options.Tracer.AsVerbose("Processing finished.");
                 return;
             }
             int maxContentLength = _options.GetMaxContentLength();
