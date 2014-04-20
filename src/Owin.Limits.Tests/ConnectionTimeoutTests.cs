@@ -14,7 +14,7 @@
     public class ConnectionTimeoutTests
     {
         [Fact]
-        public async Task When_time_out_is_not_triggered_then_should_throw()
+        public async Task When_time_out_is_triggered_then_should_throw()
         {
             TimeSpan timeout = TimeSpan.FromMilliseconds(1000);
             Func<TimeSpan> getConnectionTimeout = () => timeout;
@@ -47,7 +47,7 @@
                 .Use(async (context, _) =>
                 {
                     var buffer = new byte[1024];
-                    int i = await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
+                    await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
                     byte[] bytes = Enumerable.Repeat((byte) 0x1, 1024).ToArray();
                     context.Response.StatusCode = 200;
                     context.Response.ReasonPhrase = "OK";
