@@ -11,9 +11,9 @@
     public class MaxConcurrentRequestsTests
     {
         [Fact]
-        public async Task When_max_concurrent_request_is_1_then_second_request_should_get_service_unavailable()
+        public async Task When_max_concurrent_request_is_1_then_second_request_should_get_service_unavailable_and_custom_reasonPhrase()
         {
-            var httpClient = CreateHttpClient(1);
+            HttpClient httpClient = CreateHttpClient(1);
             Task<HttpResponseMessage> request1 = httpClient.GetAsync("http://example.com");
             Task<HttpResponseMessage> request2 = httpClient.GetAsync("http://example.com");
 
@@ -21,12 +21,13 @@
 
             request1.Result.StatusCode.Should().Be(HttpStatusCode.OK);
             request2.Result.StatusCode.Should().Be(HttpStatusCode.ServiceUnavailable);
+            request2.Result.ReasonPhrase.Should().Be("custom phrase");
         }
 
         [Fact]
         public async Task When_max_concurrent_request_is_2_then_second_request_should_get_ok()
         {
-            var httpClient = CreateHttpClient(2);
+            HttpClient httpClient = CreateHttpClient(2);
             Task<HttpResponseMessage> request1 = httpClient.GetAsync("http://example.com");
             Task<HttpResponseMessage> request2 = httpClient.GetAsync("http://example.com");
 
@@ -39,7 +40,7 @@
         [Fact]
         public async Task When_max_concurrent_request_is_0_then_second_request_should_get_ok()
         {
-            var httpClient = CreateHttpClient(0);
+            HttpClient httpClient = CreateHttpClient(0);
             Task<HttpResponseMessage> request1 = httpClient.GetAsync("http://example.com");
             Task<HttpResponseMessage> request2 = httpClient.GetAsync("http://example.com");
 
@@ -53,7 +54,10 @@
         {
             return TestServer.Create(builder => builder
                 .MaxBandwidth(1)
-                .MaxConcurrentRequests(maxConcurrentRequests)
+                .MaxConcurrentRequests(new MaxConcurrentRequestOptions(maxConcurrentRequests)
+                {
+                    LimitReachedReasonPhrase = code => "custom phrase"
+                })
                 .Use(async (context, _) =>
                 {
                     byte[] bytes = Enumerable.Repeat((byte) 0x1, 2).ToArray();

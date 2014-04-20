@@ -12,6 +12,7 @@
     {
         private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly ConnectionTimeoutOptions _options;
+
         public ConnectionTimeoutMiddleware(Func<IDictionary<string, object>, Task> next
             , ConnectionTimeoutOptions options)
         {
@@ -19,12 +20,14 @@
             {
                 throw new ArgumentNullException("next");
             }
-            if (options == null) {
+            if (options == null)
+            {
                 throw new ArgumentNullException("options");
             }
             _next = next;
-            _options = options;;
+            _options = options;
         }
+
         [UsedImplicitly]
         public async Task Invoke(IDictionary<string, object> environment)
         {
@@ -35,8 +38,8 @@
             _options.Tracer.AsVerbose("{0} starts processing request.".FormattedWith(GetType().Name));
 
             var context = new OwinContext(environment);
-            var requestBodyStream = context.Request.Body ?? Stream.Null;
-            var responseBodyStream = context.Response.Body;
+            Stream requestBodyStream = context.Request.Body ?? Stream.Null;
+            Stream responseBodyStream = context.Response.Body;
 
             _options.Tracer.AsVerbose("Configure timeouts.");
             TimeSpan connectionTimeout = _options.GetTimeout();

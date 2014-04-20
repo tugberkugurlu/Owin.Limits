@@ -13,10 +13,10 @@
     {
         private const long Infinite = 0;
         private readonly Stream _innerStream;
-        private long _byteCount;
         private readonly long _maximumBytesPerSecond;
+        private long _byteCount;
         private long _start;
-        
+
         public ThrottledStream(Stream innerStream, long maximumBytesPerSecond = Infinite)
         {
             if (innerStream == null)
@@ -172,4 +172,4 @@
             }
         }
     }
-}   
+}
