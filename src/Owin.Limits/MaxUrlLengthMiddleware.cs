@@ -26,8 +26,11 @@
             _options.Tracer.AsVerbose("Checking request url length.");
             if (unescapedUri.Length > maxUrlLength)
             {
-                _options.Tracer.AsInfo("Url \"{0}\"(Length: {2}) exceeds allowed length of {1}. Request rejected.".FormatWith(unescapedUri, maxUrlLength,
-                    unescapedUri.Length));
+                _options.Tracer.AsInfo(
+                    "Url \"{0}\"(Length: {2}) exceeds allowed length of {1}. Request rejected.",
+                    unescapedUri,
+                    maxUrlLength,
+                    unescapedUri.Length);
                 context.Response.StatusCode = 414;
                 context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(context.Response.StatusCode);
                 return;

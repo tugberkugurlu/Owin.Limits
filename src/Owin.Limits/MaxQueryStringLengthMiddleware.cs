@@ -32,8 +32,9 @@
                 _options.Tracer.AsVerbose("Querystring of request with an unescaped length of {0}".FormatWith(unescapedQueryString.Length));
                 if (unescapedQueryString.Length > maxQueryStringLength)
                 {
-                    _options.Tracer.AsInfo("Querystring (Length {0}) too long (allowed {1}). Request rejected.".FormatWith(unescapedQueryString.Length,
-                        maxQueryStringLength));
+                    _options.Tracer.AsInfo("Querystring (Length {0}) too long (allowed {1}). Request rejected.",
+                        unescapedQueryString.Length,
+                        maxQueryStringLength);
                     context.Response.StatusCode = 414;
                     context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(context.Response.StatusCode);
                     return;

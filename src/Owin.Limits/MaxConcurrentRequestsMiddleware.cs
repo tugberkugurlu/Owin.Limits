@@ -26,10 +26,10 @@
             {
                 int concurrentRequests = Interlocked.Increment(ref _concurrentRequests);
                 _options.Tracer.AsVerbose("Concurrent counter incremented.");
-                _options.Tracer.AsVerbose("Checking concurrent request #{0}.".FormatWith(concurrentRequests));
+                _options.Tracer.AsVerbose("Checking concurrent request #{0}.", concurrentRequests);
                 if (concurrentRequests > maxConcurrentRequests)
                 {
-                    _options.Tracer.AsInfo("Limit of {0} exceeded with #{1}. Request rejected.".FormatWith(maxConcurrentRequests, concurrentRequests));
+                    _options.Tracer.AsInfo("Limit of {0} exceeded with #{1}. Request rejected.", maxConcurrentRequests, concurrentRequests);
                     IOwinResponse response = new OwinContext(environment).Response;
                     response.StatusCode = 503;
                     response.ReasonPhrase = _options.LimitReachedReasonPhrase(response.StatusCode);
