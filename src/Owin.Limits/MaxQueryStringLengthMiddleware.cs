@@ -21,7 +21,7 @@
         {
             environment.MustNotNull("environment");
 
-            _options.Tracer.AsVerbose("{0} starts processing request".FormatWith(GetType().Name));
+            _options.Tracer.AsVerbose("{0} starts processing request", GetType().Name);
 
             var context = new OwinContext(environment);
             QueryString queryString = context.Request.QueryString;
@@ -29,7 +29,7 @@
             {
                 int maxQueryStringLength = _options.GetMaxQueryStringLength();
                 string unescapedQueryString = Uri.UnescapeDataString(queryString.Value);
-                _options.Tracer.AsVerbose("Querystring of request with an unescaped length of {0}".FormatWith(unescapedQueryString.Length));
+                _options.Tracer.AsVerbose("Querystring of request with an unescaped length of {0}", unescapedQueryString.Length);
                 if (unescapedQueryString.Length > maxQueryStringLength)
                 {
                     _options.Tracer.AsInfo("Querystring (Length {0}) too long (allowed {1}). Request rejected.",
@@ -46,7 +46,7 @@
                 _options.Tracer.AsVerbose("No querystring.");
             }
 
-            _options.Tracer.AsVerbose("{0} finished processing request. Request is forwarded.".FormatWith(GetType().Name));
+            _options.Tracer.AsVerbose("{0} finished processing request. Request is forwarded.", GetType().Name);
             await next(environment);
         }
     }

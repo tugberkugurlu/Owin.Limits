@@ -24,9 +24,9 @@
         {
             environment.MustNotNull("environment");
             Stopwatch stopwatch = Stopwatch.StartNew();
-            _tracer.AsVerbose("{0} processing start.".FormatWith(GetType().Name));
+            _tracer.AsVerbose("{0} processing start.", GetType().Name);
             await InvokeInternal(_next, environment);
-            _tracer.AsVerbose("{0} processing end. Time taken {0}ms.".FormatWith(GetType().Name, stopwatch.ElapsedMilliseconds));
+            _tracer.AsVerbose("{0} processing end. Time taken {0}ms.", GetType().Name, stopwatch.ElapsedMilliseconds);
         }
 
         protected abstract Task InvokeInternal(AppFunc next, IDictionary<string, object> environment);
