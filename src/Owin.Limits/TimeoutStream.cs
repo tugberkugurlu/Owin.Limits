@@ -1,7 +1,6 @@
 ﻿namespace Owin.Limits
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -12,9 +11,9 @@
         private readonly Stream _innerStream;
         private readonly TimeSpan _timeout;
         private readonly Timer _timer;
-        private readonly Action<TraceEventType, string> _tracer;
+        private readonly Tracer _tracer;
 
-        public TimeoutStream(Stream innerStream, TimeSpan timeout, Action<TraceEventType, string> tracer)
+        public TimeoutStream(Stream innerStream, TimeSpan timeout, Tracer tracer)
         {
             _innerStream = innerStream;
             _timeout = timeout;

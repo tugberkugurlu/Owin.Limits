@@ -8,22 +8,17 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxBandwidthMiddleware
+    internal class MaxBandwidthMiddleware : MiddlewareBase
     {
-        private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly MaxBandwidthOptions _options;
 
         public MaxBandwidthMiddleware(Func<IDictionary<string, object>, Task> next, MaxBandwidthOptions options)
+            : base(next.ToAppFunc(), options.Tracer)
         {
-            next.MustNotNull("next");
-            options.MustNotNull("options");
-            
-            _next = next;
             _options = options;
         }
 
-        [UsedImplicitly]
-        public async Task Invoke(IDictionary<string, object> environment)
+        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
             environment.MustNotNull("environment");
             
@@ -43,7 +38,7 @@
 
             //TODO consider SendFile interception
             _options.Tracer.AsVerbose("With configured limit forwarded.");
-            await _next(environment);
+            await next(environment);
 
             context.Request.Body = requestBodyStream;
             context.Response.Body = responseBodyStream;

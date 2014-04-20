@@ -1,21 +1,18 @@
 namespace Owin.Limits
 {
-    using System;
-    using System.Diagnostics;
-
     /// <summary>
     /// Base options class
     /// </summary>
     public abstract class OptionsBase
     {
-        private Action<TraceEventType, string> _tracer;
+        private Tracer _tracer;
 
         /// <summary>
         /// Gets or sets the delegate to trace the middleware.
         /// </summary>
-        public Action<TraceEventType, string> Tracer
+        public Tracer Tracer
         {
-            get { return _tracer ?? DefaultDelegateHelper.Tracer; }
+            get { return _tracer ?? DefaultDelegateHelper.DefaultTracer; }
             set { _tracer = value; }
         }
     }

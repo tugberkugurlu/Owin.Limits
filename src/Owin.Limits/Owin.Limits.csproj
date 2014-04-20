@@ -67,6 +67,8 @@
     <Compile Include="MaxQueryStringLengthMiddleware.cs" />
     <Compile Include="MaxRequestContentLengthOptions.cs" />
     <Compile Include="MaxUrlLengthMiddleware.cs" />
+    <Compile Include="MaxUrlLengthOptions.cs" />
+    <Compile Include="MiddlewareBase.cs" />
     <Compile Include="OptionsBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="StringExtension.cs" />
     <Compile Include="ThrottleStream.cs" />
     <Compile Include="TimeoutStream.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="TracerActionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

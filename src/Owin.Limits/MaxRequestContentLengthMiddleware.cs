@@ -7,28 +7,18 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxRequestContentLengthMiddleware
+    internal class MaxRequestContentLengthMiddleware : MiddlewareBase
     {
-        private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly MaxRequestContentLengthOptions _options;
 
         public MaxRequestContentLengthMiddleware(Func<IDictionary<string, object>, Task> next, MaxRequestContentLengthOptions options)
+            : base(next.ToAppFunc(), options.Tracer)
         {
-            next.MustNotNull("next");
-            options.MustNotNull("options");
-
-            _next = next;
             _options = options;
         }
 
-
-        [UsedImplicitly]
-        public async Task Invoke(IDictionary<string, object> environment)
+        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
-            environment.MustNotNull("environment");
-
-            _options.Tracer.AsVerbose("Start processing.");
-
             var context = new OwinContext(environment);
             IOwinRequest request = context.Request;
             string requestMethod = request.Method.Trim().ToUpper();
@@ -36,7 +26,7 @@
             if (requestMethod == "GET" || requestMethod == "HEAD")
             {
                 _options.Tracer.AsVerbose("GET or HEAD request without checking forwarded.");
-                await _next(environment);
+                await next(environment);
                 _options.Tracer.AsVerbose("Processing finished.");
                 return;
             }
@@ -78,7 +68,7 @@
             try
             {
                 _options.Tracer.AsVerbose("Request forwarded.");
-                await _next(environment);
+                await next(environment);
                 _options.Tracer.AsVerbose("Processing finished.");
             }
             catch (ContentLengthExceededException)

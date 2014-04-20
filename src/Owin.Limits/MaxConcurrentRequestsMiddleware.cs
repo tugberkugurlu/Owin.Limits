@@ -8,30 +8,19 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxConcurrentRequestsMiddleware
+    internal class MaxConcurrentRequestsMiddleware : MiddlewareBase
     {
-        private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly MaxConcurrentRequestOptions _options;
         private int _concurrentRequests;
 
         public MaxConcurrentRequestsMiddleware(Func<IDictionary<string, object>, Task> next, MaxConcurrentRequestOptions options)
+            : base(next.ToAppFunc(), options.Tracer)
         {
-            next.MustNotNull("next");
-            options.MustNotNull("options");
-            
-            _next = next;
             _options = options;
         }
 
-        [UsedImplicitly]
-        public async Task Invoke(IDictionary<string, object> environment)
+        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
-            if (environment == null)
-            {
-                throw new ArgumentNullException("environment");
-            }
-            _options.Tracer.AsVerbose("Start processing.");
-
             int maxConcurrentRequests = GetMaxConcurrentRequestLimit();
             try
             {
@@ -47,14 +36,13 @@
                     return;
                 }
                 _options.Tracer.AsVerbose("Request forwarded.");
-                await _next(environment);
+                await next(environment);
             }
             finally
             {
                 Interlocked.Decrement(ref _concurrentRequests);
                 _options.Tracer.AsVerbose("Concurrent counter decremented.");
             }
-            _options.Tracer.AsVerbose("Processing finished.");
         }
 
         private int GetMaxConcurrentRequestLimit()

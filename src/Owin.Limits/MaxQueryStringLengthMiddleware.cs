@@ -7,22 +7,17 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxQueryStringLengthMiddleware
+    internal class MaxQueryStringLengthMiddleware : MiddlewareBase
     {
-        private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly MaxQueryStringLengthOptions _options;
 
         public MaxQueryStringLengthMiddleware(Func<IDictionary<string, object>, Task> next, MaxQueryStringLengthOptions options)
+            : base(next.ToAppFunc(), options.Tracer)
         {
-            next.MustNotNull("next");
-            options.MustNotNull("options");
-
-            _next = next;
             _options = options;
         }
 
-        [UsedImplicitly]
-        public async Task Invoke(IDictionary<string, object> environment)
+        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
             environment.MustNotNull("environment");
 
@@ -51,7 +46,7 @@
             }
 
             _options.Tracer.AsVerbose("{0} finished processing request. Request is forwarded.".FormatWith(GetType().Name));
-            await _next(environment);
+            await next(environment);
         }
     }
 }

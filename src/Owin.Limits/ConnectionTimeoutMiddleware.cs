@@ -8,27 +8,18 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class ConnectionTimeoutMiddleware
+    internal class ConnectionTimeoutMiddleware : MiddlewareBase
     {
-        private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly ConnectionTimeoutOptions _options;
 
         public ConnectionTimeoutMiddleware(Func<IDictionary<string, object>, Task> next, ConnectionTimeoutOptions options)
+            : base(next.ToAppFunc(), options.Tracer)
         {
-            next.MustNotNull("next");
-            options.MustNotNull("options");
-            
-            _next = next;
             _options = options;
         }
 
-        [UsedImplicitly]
-        public async Task Invoke(IDictionary<string, object> environment)
+        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
-            environment.MustNotNull("environment");
-            
-            _options.Tracer.AsVerbose("{0} starts processing request.".FormatWith(GetType().Name));
-
             var context = new OwinContext(environment);
             Stream requestBodyStream = context.Request.Body ?? Stream.Null;
             Stream responseBodyStream = context.Response.Body;
@@ -39,11 +30,10 @@
             context.Response.Body = new TimeoutStream(responseBodyStream, connectionTimeout, _options.Tracer);
 
             _options.Tracer.AsVerbose("Request with configured timeout forwarded.");
-            await _next(environment);
+            await next(environment);
 
             context.Request.Body = requestBodyStream;
             context.Response.Body = responseBodyStream;
-            _options.Tracer.AsVerbose("{0} finished processing.".FormatWith(GetType().Name));
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Owin.Limits
         /// </summary>
         public Func<int, string> LimitReachedReasonPhrase
         {
-            get { return _limitReachedReasonPhrase ?? DefaultDelegateHelper.ReasonPhrase; }
+            get { return _limitReachedReasonPhrase ?? DefaultDelegateHelper.DefaultReasonPhrase; }
             set { _limitReachedReasonPhrase = value; }
         }
     }
