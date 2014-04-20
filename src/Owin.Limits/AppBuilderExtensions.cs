@@ -42,10 +42,9 @@ namespace Owin
         /// <exception cref="System.ArgumentNullException">builder</exception>
         public static IAppBuilder MaxBandwidth(this IAppBuilder builder, MaxBandwidthOptions options)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException("builder");
-            }
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
             return builder.Use<MaxBandwidthMiddleware>(options);
         }
 
@@ -86,14 +85,9 @@ namespace Owin
         /// </exception>
         public static IAppBuilder MaxConcurrentRequests(this IAppBuilder builder, MaxConcurrentRequestOptions options)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException("builder");
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
             return builder.Use<MaxConcurrentRequestsMiddleware>(options);
         }
 
@@ -136,14 +130,9 @@ namespace Owin
         /// </exception>
         public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, ConnectionTimeoutOptions options)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException("builder");
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
             return builder.Use<ConnectionTimeoutMiddleware>(options);
         }
 
@@ -179,10 +168,9 @@ namespace Owin
         /// <exception cref="System.ArgumentNullException">builder</exception>
         public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, MaxQueryStringLengthOptions options)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException("builder");
-            }
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
             return builder.Use<MaxQueryStringLengthMiddleware>(options);
         }
 
@@ -222,14 +210,9 @@ namespace Owin
         /// </exception>
         public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, MaxRequestContentLengthOptions options)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException("builder");
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
             return builder.Use<MaxRequestContentLengthMiddleware>(options);
         }
 
@@ -272,14 +255,6 @@ namespace Owin
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            if (builder == null)
-            {
-                throw new ArgumentNullException("builder");
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
             return builder.Use<MaxUrlLengthMiddleware>(options);
         }
     }
