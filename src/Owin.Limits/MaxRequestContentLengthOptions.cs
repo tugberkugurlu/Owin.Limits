@@ -25,7 +25,7 @@ namespace Owin.Limits
             GetMaxContentLength = getMaxContentLength;
         }
 
-        internal Func<int> GetMaxContentLength { get; set; }
+        internal Func<int> GetMaxContentLength { get; private set; }
 
         /// <summary>
         /// Gets or sets the delegate to set a reasonphrase.<br/>
