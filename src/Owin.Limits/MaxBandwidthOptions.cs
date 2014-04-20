@@ -1,15 +1,12 @@
 namespace Owin.Limits
 {
     using System;
-    using System.Diagnostics;
 
     /// <summary>
     /// Options for limiting the max bandwidth.
     /// </summary>
-    public class MaxBandwidthOptions
+    public class MaxBandwidthOptions : OptionsBase
     {
-        private Action<TraceEventType, string> _trace;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MaxBandwidthOptions"/> class.
         /// </summary>
@@ -29,14 +26,5 @@ namespace Owin.Limits
         }
 
         internal Func<int> GetMaxBytesPerSecond { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the delegate to trace the middleware.
-        /// </summary>
-        public Action<TraceEventType, string> Tracer
-        {
-            get { return _trace ?? DefaultDelegateHelper.Tracer; }
-            set { _trace = value; }
-        }
     }
 }

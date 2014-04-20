@@ -1,15 +1,13 @@
 namespace Owin.Limits
 {
     using System;
-    using System.Diagnostics;
 
     /// <summary>
     /// Options for limitng the request content length.
     /// </summary>
-    public class MaxRequestContentLengthOptions
+    public class MaxRequestContentLengthOptions : OptionsBase
     {
         private Func<int, string> _limitReachedReasonPhrase;
-        private Action<TraceEventType, string> _trace;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MaxRequestContentLengthOptions"/> class.
@@ -28,15 +26,6 @@ namespace Owin.Limits
         }
 
         internal Func<int> GetMaxContentLength { get; set; }
-
-        /// <summary>
-        /// Gets or sets the delegate to trace the middleware.
-        /// </summary>
-        public Action<TraceEventType, string> Tracer
-        {
-            get { return _trace ?? DefaultDelegateHelper.Tracer; }
-            set { _trace = value; }
-        }
 
         /// <summary>
         /// Gets or sets the delegate to set a reasonphrase.<br/>

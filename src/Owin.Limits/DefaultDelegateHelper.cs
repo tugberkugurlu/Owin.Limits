@@ -5,7 +5,7 @@
 
     internal static class DefaultDelegateHelper
     {
-        public static Action<TraceEventType, string> Tracer = (type, msg) => { };
-        public static Func<int, string> ReasonPhrase = code => "";
+        public static readonly Action<TraceEventType, string> Tracer = (type, msg) => { };
+        public static readonly Func<int, string> ReasonPhrase = code => string.Empty;
     }
 }

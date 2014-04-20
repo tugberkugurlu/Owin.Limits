@@ -5,7 +5,9 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.Owin;
+    using Owin.Limits.Annotations;
 
+    [UsedImplicitly]
     internal class MaxUrlLengthMiddleware
     {
         private readonly Func<IDictionary<string, object>, Task> _next;
@@ -40,7 +42,7 @@
             _options.Tracer.AsVerbose("Checking request url length.");
             if (unescapedUri.Length > maxUrlLength)
             {
-                _options.Tracer.AsInfo("Url \"{0}\"(Length: {2}) exceeds allowed length of {1}. Request rejected.".FormattedWith(unescapedUri, maxUrlLength,
+                _options.Tracer.AsInfo("Url \"{0}\"(Length: {2}) exceeds allowed length of {1}. Request rejected.".FormatWith(unescapedUri, maxUrlLength,
                     unescapedUri.Length));
                 context.Response.StatusCode = 414;
                 context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(context.Response.StatusCode);

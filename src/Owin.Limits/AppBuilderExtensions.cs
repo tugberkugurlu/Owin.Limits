@@ -1,7 +1,5 @@
-﻿// ReSharper disable CheckNamespace
-
+﻿// ReSharper disable once CheckNamespace
 namespace Owin
-// ReSharper restore CheckNamespace
 {
     using System;
     using Owin.Limits;
@@ -11,8 +9,6 @@ namespace Owin
     /// </summary>
     public static class AppBuilderExtensions
     {
-        #region max bandwidth
-
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
@@ -52,10 +48,6 @@ namespace Owin
             }
             return builder.Use<MaxBandwidthMiddleware>(options);
         }
-
-        #endregion
-
-        #region max concurrent requests
 
         /// <summary>
         /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
@@ -104,10 +96,6 @@ namespace Owin
             }
             return builder.Use<MaxConcurrentRequestsMiddleware>(options);
         }
-
-        #endregion
-
-        #region connection timeout
 
         /// <summary>
         /// Timeouts the connection if there hasn't been an read read activity on the request body stream or any
@@ -159,10 +147,6 @@ namespace Owin
             return builder.Use<ConnectionTimeoutMiddleware>(options);
         }
 
-        #endregion
-
-        #region max query string length
-
         /// <summary>
         /// Limits the length of the query string.
         /// </summary>
@@ -201,10 +185,6 @@ namespace Owin
             }
             return builder.Use<MaxQueryStringLengthMiddleware>(options);
         }
-
-        #endregion
-
-        #region max request content length
 
         /// <summary>
         /// Limits the length of the request content.
@@ -253,10 +233,6 @@ namespace Owin
             return builder.Use<MaxRequestContentLengthMiddleware>(options);
         }
 
-        #endregion
-
-        #region max url length
-
         /// <summary>
         /// Limits the length of the URL.
         /// </summary>
@@ -303,7 +279,5 @@ namespace Owin
             }
             return builder.Use<MaxUrlLengthMiddleware>(options);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,9 @@
-namespace Owin.Limits
+// ReSharper disable once CheckNamespace
+namespace System
 {
     internal static class StringExtension
     {
-        public static string FormattedWith(this string source, params object[] args)
+        internal static string FormatWith(this string source, params object[] args)
         {
             return string.Format(source, args);
         }

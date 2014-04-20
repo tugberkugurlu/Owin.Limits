@@ -25,7 +25,7 @@
             };
             _timer.Elapsed += (sender, args) =>
             {
-                tracer.AsInfo("Timeout of {0} reached.".FormattedWith(_timeout));
+                tracer.AsInfo("Timeout of {0} reached.".FormatWith(_timeout));
                 Close();
             };
             _timer.Start();

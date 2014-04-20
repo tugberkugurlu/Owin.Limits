@@ -51,13 +51,9 @@
             response.ReasonPhrase.Should().Be("custom phrase");
         }
 
-        private static HttpClient CreateClient(int length)
+        private static HttpClient CreateClient(int length, string reasonPhrase = null)
         {
-            return CreateClient(length, "");
-        }
-
-        private static HttpClient CreateClient(int length, string reasonPhrase)
-        {
+            reasonPhrase = reasonPhrase ?? string.Empty;
             return TestServer.Create(builder => builder
                 .MaxQueryStringLength(new MaxQueryStringLengthOptions(length) {LimitReachedReasonPhrase = code => reasonPhrase})
                 .Use((context, next) =>

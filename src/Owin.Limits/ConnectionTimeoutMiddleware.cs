@@ -35,7 +35,7 @@
             {
                 throw new ArgumentNullException("environment");
             }
-            _options.Tracer.AsVerbose("{0} starts processing request.".FormattedWith(GetType().Name));
+            _options.Tracer.AsVerbose("{0} starts processing request.".FormatWith(GetType().Name));
 
             var context = new OwinContext(environment);
             Stream requestBodyStream = context.Request.Body ?? Stream.Null;
@@ -51,7 +51,7 @@
 
             context.Request.Body = requestBodyStream;
             context.Response.Body = responseBodyStream;
-            _options.Tracer.AsVerbose("{0} finished processing.".FormattedWith(GetType().Name));
+            _options.Tracer.AsVerbose("{0} finished processing.".FormatWith(GetType().Name));
         }
     }
 }

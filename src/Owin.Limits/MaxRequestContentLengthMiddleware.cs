@@ -49,7 +49,7 @@
                 return;
             }
             int maxContentLength = _options.GetMaxContentLength();
-            _options.Tracer.AsVerbose("Max valid content length is {0}.".FormattedWith(maxContentLength));
+            _options.Tracer.AsVerbose("Max valid content length is {0}.".FormatWith(maxContentLength));
             if (!IsChunkedRequest(request))
             {
                 _options.Tracer.AsVerbose("Not a chunked request. Checking content lengt header.");
@@ -63,13 +63,13 @@
                 int contentLength;
                 if (!int.TryParse(contentLengthHeaderValue, out contentLength))
                 {
-                    _options.Tracer.AsInfo("Invalid content length header value. Value: {0}".FormattedWith(contentLengthHeaderValue));
+                    _options.Tracer.AsInfo("Invalid content length header value. Value: {0}".FormatWith(contentLengthHeaderValue));
                     SetResponseStatusCodeAndReasonPhrase(context, 400);
                     return;
                 }
                 if (contentLength > maxContentLength)
                 {
-                    _options.Tracer.AsInfo("Content length of {0} exceeds maximum of {1}. Request rejected.".FormattedWith(contentLength, maxContentLength));
+                    _options.Tracer.AsInfo("Content length of {0} exceeds maximum of {1}. Request rejected.".FormatWith(contentLength, maxContentLength));
                     SetResponseStatusCodeAndReasonPhrase(context, 413);
                     return;
                 }
@@ -81,7 +81,7 @@
             }
 
             request.Body = new ContentLengthLimitingStream(request.Body, maxContentLength);
-            _options.Tracer.AsVerbose("Request body stream configured with length limiting stream of {0}.".FormattedWith(maxContentLength));
+            _options.Tracer.AsVerbose("Request body stream configured with length limiting stream of {0}.".FormatWith(maxContentLength));
 
             try
             {
@@ -91,7 +91,7 @@
             }
             catch (ContentLengthExceededException)
             {
-                _options.Tracer.AsInfo("Content length of {0} exceeded. Request canceled and rejected.".FormattedWith(maxContentLength));
+                _options.Tracer.AsInfo("Content length of {0} exceeded. Request canceled and rejected.".FormatWith(maxContentLength));
                 SetResponseStatusCodeAndReasonPhrase(context, 413);
             }
         }
