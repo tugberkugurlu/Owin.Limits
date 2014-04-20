@@ -18,7 +18,7 @@
             _options = options;
         }
 
-        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
+        protected override Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
             var context = new OwinContext(environment);
             Stream requestBodyStream = context.Request.Body ?? Stream.Null;
@@ -30,10 +30,7 @@
             context.Response.Body = new TimeoutStream(responseBodyStream, connectionTimeout, _options.Tracer);
 
             _options.Tracer.AsVerbose("Request with configured timeout forwarded.");
-            await next(environment);
-
-            context.Request.Body = requestBodyStream;
-            context.Response.Body = responseBodyStream;
+            return next(environment);
         }
     }
 }

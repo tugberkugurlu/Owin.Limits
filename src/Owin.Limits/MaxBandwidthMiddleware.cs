@@ -18,12 +18,10 @@
             _options = options;
         }
 
-        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
+        protected override Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
             environment.MustNotNull("environment");
             
-            _options.Tracer.AsVerbose("Start processing.");
-
             var context = new OwinContext(environment);
             Stream requestBodyStream = context.Request.Body ?? Stream.Null;
             Stream responseBodyStream = context.Response.Body;
@@ -38,11 +36,7 @@
 
             //TODO consider SendFile interception
             _options.Tracer.AsVerbose("With configured limit forwarded.");
-            await next(environment);
-
-            context.Request.Body = requestBodyStream;
-            context.Response.Body = responseBodyStream;
-            _options.Tracer.AsVerbose("Processing finished.");
+            return next(environment);
         }
     }
 }
