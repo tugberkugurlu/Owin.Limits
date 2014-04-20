@@ -1,6 +1,5 @@
 namespace Owin.Limits
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Threading.Tasks;
@@ -17,13 +16,4 @@ namespace Owin.Limits
     /// </summary>
     /// <param name="environment"></param>
     internal delegate Task AppFunc(IDictionary<string, object> environment);
-
-    internal static class EnviromentExtensions
-    {
-        internal static AppFunc ToAppFunc(this Func<IDictionary<string, object>, Task> appFunc)
-        {
-            appFunc.MustNotNull("appFunc");
-            return env => appFunc(env);
-        }
-    }
 }
