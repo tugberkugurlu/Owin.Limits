@@ -13,17 +13,11 @@
         private readonly Func<IDictionary<string, object>, Task> _next;
         private readonly ConnectionTimeoutOptions _options;
 
-        public ConnectionTimeoutMiddleware(Func<IDictionary<string, object>, Task> next
-            , ConnectionTimeoutOptions options)
+        public ConnectionTimeoutMiddleware(Func<IDictionary<string, object>, Task> next, ConnectionTimeoutOptions options)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException("next");
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
+            next.MustNotNull("next");
+            options.MustNotNull("options");
+            
             _next = next;
             _options = options;
         }
@@ -31,10 +25,8 @@
         [UsedImplicitly]
         public async Task Invoke(IDictionary<string, object> environment)
         {
-            if (environment == null)
-            {
-                throw new ArgumentNullException("environment");
-            }
+            environment.MustNotNull("environment");
+            
             _options.Tracer.AsVerbose("{0} starts processing request.".FormatWith(GetType().Name));
 
             var context = new OwinContext(environment);

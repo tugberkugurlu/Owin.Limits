@@ -19,16 +19,14 @@
 
         public ThrottledStream(Stream innerStream, long maximumBytesPerSecond = Infinite)
         {
-            if (innerStream == null)
-            {
-                throw new ArgumentNullException("innerStream");
-            }
+            innerStream.MustNotNull("innerStream");
 
             if (maximumBytesPerSecond < 0)
             {
-                throw new ArgumentOutOfRangeException("maximumBytesPerSecond",
+                throw new ArgumentOutOfRangeException(
+                    "maximumBytesPerSecond",
                     maximumBytesPerSecond,
-                    "The maximum number of bytes per second can't be negatie.");
+                    "The maximum number of bytes per second can't be negative.");
             }
 
             _innerStream = innerStream;

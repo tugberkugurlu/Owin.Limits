@@ -14,14 +14,8 @@
 
         public MaxRequestContentLengthMiddleware(Func<IDictionary<string, object>, Task> next, MaxRequestContentLengthOptions options)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException("next");
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
+            next.MustNotNull("next");
+            options.MustNotNull("options");
 
             _next = next;
             _options = options;
@@ -31,10 +25,8 @@
         [UsedImplicitly]
         public async Task Invoke(IDictionary<string, object> environment)
         {
-            if (environment == null)
-            {
-                throw new ArgumentNullException("environment");
-            }
+            environment.MustNotNull("environment");
+
             _options.Tracer.AsVerbose("Start processing.");
 
             var context = new OwinContext(environment);

@@ -16,14 +16,9 @@
 
         public MaxConcurrentRequestsMiddleware(Func<IDictionary<string, object>, Task> next, MaxConcurrentRequestOptions options)
         {
-            if (next == null)
-            {
-                throw new ArgumentNullException("next");
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException("options");
-            }
+            next.MustNotNull("next");
+            options.MustNotNull("options");
+            
             _next = next;
             _options = options;
         }

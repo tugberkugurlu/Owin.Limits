@@ -269,6 +269,9 @@ namespace Owin
         /// </exception>
         public static IAppBuilder MaxUrlLength(this IAppBuilder builder, MaxUrlLengthOptions options)
         {
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
             if (builder == null)
             {
                 throw new ArgumentNullException("builder");
