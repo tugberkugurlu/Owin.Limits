@@ -17,7 +17,7 @@
             _options = options;
         }
 
-        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
+        protected override Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
         {
             var context = new OwinContext(environment);
             int maxUrlLength = _options.GetMaxUrlLength();
@@ -33,11 +33,10 @@
                     unescapedUri.Length);
                 context.Response.StatusCode = 414;
                 context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(context.Response.StatusCode);
-                return;
+                return Task.FromResult(0);
             }
             _options.Tracer.AsVerbose("Check passed. Request forwarded.");
-            await next(environment);
-            _options.Tracer.AsVerbose("Processing finished.");
+            return next(environment);
         }
     }
 }
