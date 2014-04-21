@@ -195,7 +195,8 @@ namespace Owin //TODO what should this namespace be?
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use(typeof(MaxRequestContentLengthMiddleware), options);
+            builder.Use().MaxRequestContentLength(options);
+            return builder;
         }
 
         /// <summary>
