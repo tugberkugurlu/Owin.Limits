@@ -7,7 +7,7 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxRequestContentLengthMiddleware : MiddlewareBase
+    public class MaxRequestContentLengthMiddleware : MiddlewareBase
     {
         private readonly MaxRequestContentLengthOptions _options;
 

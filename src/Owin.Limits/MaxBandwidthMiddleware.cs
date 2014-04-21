@@ -1,42 +1,69 @@
 ﻿namespace Owin.Limits
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Threading.Tasks;
     using Microsoft.Owin;
-    using Owin.Limits.Annotations;
 
-    [UsedImplicitly]
-    internal class MaxBandwidthMiddleware : MiddlewareBase
+    /// <summary>
+    /// OWIN middleware to limit the bandwidth of a request.
+    /// </summary>
+    public static class MaxBandwidthMiddleware
     {
-        private readonly MaxBandwidthOptions _options;
-
-        public MaxBandwidthMiddleware(Func<IDictionary<string, object>, Task> next, MaxBandwidthOptions options)
-            : base(next.ToAppFunc(), options.Tracer)
+        /// <summary>
+        /// Limits the bandwith used by the subsequent stages in the owin pipeline.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="maxBytesPerSecond">The maximum number of bytes per second to be transferred. Use 0 or a negative
+        /// number to specify infinite bandwidth.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        public static Action<MidFunc> MaxBandwidth(this Action<MidFunc> builder, int maxBytesPerSecond)
         {
-            _options = options;
+            return MaxBandwidth(builder, () => maxBytesPerSecond);
         }
 
-        protected override Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
+        /// <summary>
+        /// Limits the bandwith used by the subsequent stages in the owin pipeline.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="getMaxBytesPerSecond">A delegate to retrieve the maximum number of bytes per second to be transferred.
+        /// Allows you to supply different values at runtime. Use 0 or a negative number to specify infinite bandwidth.</param>
+        /// <returns>The builder instance.</returns>
+        public static Action<MidFunc> MaxBandwidth(this Action<MidFunc> builder, Func<int> getMaxBytesPerSecond)
         {
-            environment.MustNotNull("environment");
-            
-            var context = new OwinContext(environment);
-            Stream requestBodyStream = context.Request.Body ?? Stream.Null;
-            Stream responseBodyStream = context.Response.Body;
-            int maxBytesPerSecond = _options.GetMaxBytesPerSecond();
-            if (maxBytesPerSecond < 0)
-            {
-                maxBytesPerSecond = 0;
-            }
-            _options.Tracer.AsVerbose("Configure streams to be limited.");
-            context.Request.Body = new ThrottledStream(requestBodyStream, maxBytesPerSecond);
-            context.Response.Body = new ThrottledStream(responseBodyStream, maxBytesPerSecond);
+            return MaxBandwidth(builder, new MaxBandwidthOptions(getMaxBytesPerSecond));
+        }
 
-            //TODO consider SendFile interception
-            _options.Tracer.AsVerbose("With configured limit forwarded.");
-            return next(environment);
+        /// <summary>
+        /// Limits the bandwith used by the subsequent stages in the owin pipeline.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="options">The max bandwith options.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder or options</exception>
+        public static Action<MidFunc> MaxBandwidth(this Action<MidFunc> builder, MaxBandwidthOptions options)
+        {
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
+            builder(next => env =>
+            {
+                var context = new OwinContext(env);
+                Stream requestBodyStream = context.Request.Body ?? Stream.Null;
+                Stream responseBodyStream = context.Response.Body;
+                int maxBytesPerSecond = options.GetMaxBytesPerSecond();
+                if (maxBytesPerSecond < 0)
+                {
+                    maxBytesPerSecond = 0;
+                }
+                options.Tracer.AsVerbose("Configure streams to be limited.");
+                context.Request.Body = new ThrottledStream(requestBodyStream, maxBytesPerSecond);
+                context.Response.Body = new ThrottledStream(responseBodyStream, maxBytesPerSecond);
+
+                //TODO consider SendFile interception
+                options.Tracer.AsVerbose("With configured limit forwarded.");
+                return next(env);
+            });
+            return builder;
         }
     }
 }

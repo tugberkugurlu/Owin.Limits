@@ -7,7 +7,7 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxQueryStringLengthMiddleware : MiddlewareBase
+    public class MaxQueryStringLengthMiddleware : MiddlewareBase
     {
         private readonly MaxQueryStringLengthOptions _options;
 

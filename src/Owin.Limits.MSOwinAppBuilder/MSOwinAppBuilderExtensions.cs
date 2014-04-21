@@ -4,11 +4,13 @@ namespace Owin
     using System;
     using Owin.Limits;
 
-    /// <summary>
-    /// Provides extension methods to use Owin.Limits middlewares.
-    /// </summary>
-    public static class AppBuilderExtensions
+    public static class MSOwinAppBuilderExtensions
     {
+        public static Action<MidFunc> Use(this IAppBuilder builder)
+        {
+            return middleware => builder.Use(middleware);
+        }
+
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
@@ -45,7 +47,8 @@ namespace Owin
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use<MaxBandwidthMiddleware>(options);
+            builder.Use().MaxBandwidth(options);
+            return builder;
         }
 
         /// <summary>
@@ -88,7 +91,7 @@ namespace Owin
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use<MaxConcurrentRequestsMiddleware>(options);
+            return builder.Use(typeof(MaxConcurrentRequestsMiddleware), options);
         }
 
         /// <summary>
@@ -133,7 +136,7 @@ namespace Owin
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use<ConnectionTimeoutMiddleware>(options);
+            return builder.Use(typeof(ConnectionTimeoutMiddleware), options);
         }
 
         /// <summary>
@@ -165,13 +168,13 @@ namespace Owin
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max querystring length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">builder</exception>
+        /// <exception cref="System.ArgumentNullException">builder or options</exception>
         public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, MaxQueryStringLengthOptions options)
         {
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use<MaxQueryStringLengthMiddleware>(options);
+            return builder.Use(typeof(MaxQueryStringLengthMiddleware), options);
         }
 
         /// <summary>
@@ -203,17 +206,13 @@ namespace Owin
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max request content length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// builder
-        /// or
-        /// options
-        /// </exception>
+        /// <exception cref="System.ArgumentNullException">builder or options </exception>
         public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, MaxRequestContentLengthOptions options)
         {
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use<MaxRequestContentLengthMiddleware>(options);
+            return builder.Use(typeof(MaxRequestContentLengthMiddleware), options);
         }
 
         /// <summary>
@@ -245,17 +244,13 @@ namespace Owin
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max url length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// builder
-        /// or
-        /// options
-        /// </exception>
+        /// <exception cref="System.ArgumentNullException">builder or options </exception>
         public static IAppBuilder MaxUrlLength(this IAppBuilder builder, MaxUrlLengthOptions options)
         {
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use<MaxUrlLengthMiddleware>(options);
+            return builder.Use(typeof(MaxUrlLengthMiddleware), options);
         }
     }
 }

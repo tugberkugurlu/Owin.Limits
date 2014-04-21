@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Owin.Limits.Annotations;
 
-    internal abstract class MiddlewareBase
+    public abstract class MiddlewareBase
     {
         private readonly AppFunc _next;
         private readonly Tracer _tracer;

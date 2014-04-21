@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4644748A-9034-4338-9CA2-D8C4A66DBCFF}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -17,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.Limits", "Owin.Limits\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.Limits.Tests", "Owin.Limits.Tests\Owin.Limits.Tests.csproj", "{2C2D78F6-27ED-4777-9E1A-476F9816E344}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owin.Limits.MSOwinAppBuilder", "Owin.Limits.MSOwinAppBuilder\Owin.Limits.MSOwinAppBuilder.csproj", "{9500D4DE-A670-4BA7-8422-F8D07C988673}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{2C2D78F6-27ED-4777-9E1A-476F9816E344}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C2D78F6-27ED-4777-9E1A-476F9816E344}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C2D78F6-27ED-4777-9E1A-476F9816E344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9500D4DE-A670-4BA7-8422-F8D07C988673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9500D4DE-A670-4BA7-8422-F8D07C988673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9500D4DE-A670-4BA7-8422-F8D07C988673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9500D4DE-A670-4BA7-8422-F8D07C988673}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

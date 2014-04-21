@@ -7,7 +7,7 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxUrlLengthMiddleware : MiddlewareBase
+    public class MaxUrlLengthMiddleware : MiddlewareBase
     {
         private readonly MaxUrlLengthOptions _options;
 

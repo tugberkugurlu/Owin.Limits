@@ -8,7 +8,7 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class MaxConcurrentRequestsMiddleware : MiddlewareBase
+    public class MaxConcurrentRequestsMiddleware : MiddlewareBase
     {
         private readonly MaxConcurrentRequestOptions _options;
         private int _concurrentRequests;

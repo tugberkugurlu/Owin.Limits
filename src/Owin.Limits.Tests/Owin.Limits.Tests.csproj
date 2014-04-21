@@ -83,6 +83,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Owin.Limits.MSOwinAppBuilder\Owin.Limits.MSOwinAppBuilder.csproj">
+      <Project>{9500d4de-a670-4ba7-8422-f8d07c988673}</Project>
+      <Name>Owin.Limits.MSOwinAppBuilder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Owin.Limits\Owin.Limits.csproj">
       <Project>{757a5abf-f560-416d-8494-c7a2c6f8e1ef}</Project>
       <Name>Owin.Limits</Name>

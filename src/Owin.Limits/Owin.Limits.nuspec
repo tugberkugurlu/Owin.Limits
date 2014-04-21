@@ -8,15 +8,15 @@
         <projectUrl>https://github.com/owin-middleware/Owin.Limits</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Owin.Limits</title>
-        <description>OWIN Middleware that applies limits to an OWIN pipeline. Currently supported are max bandwidth, max concurrent requests and connection timeout.</description>
+        <description>
+            OWIN Middleware that applies limits to an OWIN pipeline. Currently supported are max bandwidth, max concurrent requests, connection timeout,
+            max content length, max querystring length and max url length.
+        </description>
         <tags>owin, middleware, throttling, limits</tags>
-        <frameworkAssemblies/>
-        <dependencies>
-            <dependency id="Owin" version="1.0"/>
-        </dependencies>
-		<releaseNotes>
-			Add support for MaxRequestContentLength
-		</releaseNotes>
+        <frameworkAssemblies />
+        <releaseNotes>
+            TODO
+        </releaseNotes>
     </metadata>
     <files>
         <file src="bin\Owin.Limits\net45\Owin.Limits.dll" target="lib\net45" />

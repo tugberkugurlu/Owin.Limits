@@ -8,7 +8,7 @@
     using Owin.Limits.Annotations;
 
     [UsedImplicitly]
-    internal class ConnectionTimeoutMiddleware : MiddlewareBase
+    public class ConnectionTimeoutMiddleware : MiddlewareBase
     {
         private readonly ConnectionTimeoutOptions _options;
 
