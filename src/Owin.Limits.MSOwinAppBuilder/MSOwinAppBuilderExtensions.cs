@@ -220,13 +220,10 @@ namespace Owin //TODO what should this namespace be?
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max url length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">builder or options </exception>
         public static IAppBuilder MaxUrlLength(this IAppBuilder builder, MaxUrlLengthOptions options)
         {
-            builder.MustNotNull("builder");
-            options.MustNotNull("options");
-
-            return builder.Use(typeof(MaxUrlLengthMiddleware), options);
+            builder.Use().MaxUrlLength(options);
+            return builder;
         }
     }
 }

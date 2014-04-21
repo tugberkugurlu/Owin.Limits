@@ -1,42 +1,70 @@
 ﻿namespace Owin.Limits
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.Owin;
-    using Owin.Limits.Annotations;
 
-    [UsedImplicitly]
-    public class MaxUrlLengthMiddleware : MiddlewareBase
+    /// <summary>
+    /// OWIN middleware to limit the length of a url.
+    /// </summary>
+    public static class MaxUrlLengthMiddlware
     {
-        private readonly MaxUrlLengthOptions _options;
-
-        public MaxUrlLengthMiddleware(Func<IDictionary<string, object>, Task> next, MaxUrlLengthOptions options)
-            : base(next.ToAppFunc(), options.Tracer)
+        /// <summary>
+        /// Limits the length of the URL.
+        /// </summary>
+        /// <param name="builder">The OWIN builder instance.</param>
+        /// <param name="maxUrlLength">Maximum length of the URL.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        public static Action<MidFunc> MaxUrlLength(this Action<MidFunc> builder, int maxUrlLength)
         {
-            _options = options;
+            return MaxUrlLength(builder, () => maxUrlLength);
         }
 
-        protected override Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
+        /// <summary>
+        /// Limits the length of the URL.
+        /// </summary>
+        /// <param name="builder">The OWIN builder instance.</param>
+        /// <param name="getMaxUrlLength">A delegate to get the maximum URL length.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        public static Action<MidFunc> MaxUrlLength(this Action<MidFunc> builder, Func<int> getMaxUrlLength)
         {
-            var context = new OwinContext(environment);
-            int maxUrlLength = _options.GetMaxUrlLength();
-            string unescapedUri = Uri.UnescapeDataString(context.Request.Uri.AbsoluteUri);
+            return MaxUrlLength(builder, new MaxUrlLengthOptions(getMaxUrlLength));
+        }
 
-            _options.Tracer.AsVerbose("Checking request url length.");
-            if (unescapedUri.Length > maxUrlLength)
+        /// <summary>
+        /// Limits the length of the URL.
+        /// </summary>
+        /// <param name="builder">The OWIN builder instance.</param>
+        /// <param name="options">The max url length options.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder or options</exception>
+        public static Action<MidFunc> MaxUrlLength(this Action<MidFunc> builder, MaxUrlLengthOptions options)
+        {
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
+
+            builder(next => env =>
             {
-                _options.Tracer.AsInfo(
-                    "Url \"{0}\"(Length: {2}) exceeds allowed length of {1}. Request rejected.",
-                    unescapedUri,
-                    maxUrlLength,
-                    unescapedUri.Length);
-                context.Response.StatusCode = 414;
-                context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(context.Response.StatusCode);
-                return Task.FromResult(0);
-            }
-            _options.Tracer.AsVerbose("Check passed. Request forwarded.");
-            return next(environment);
+                var context = new OwinContext(env);
+                int maxUrlLength = options.GetMaxUrlLength();
+                string unescapedUri = Uri.UnescapeDataString(context.Request.Uri.AbsoluteUri);
+
+                options.Tracer.AsVerbose("Checking request url length.");
+                if (unescapedUri.Length > maxUrlLength)
+                {
+                    options.Tracer.AsInfo(
+                        "Url \"{0}\"(Length: {2}) exceeds allowed length of {1}. Request rejected.",
+                        unescapedUri,
+                        maxUrlLength,
+                        unescapedUri.Length);
+                    context.Response.StatusCode = 414;
+                    context.Response.ReasonPhrase = options.LimitReachedReasonPhrase(context.Response.StatusCode);
+                    return Task.FromResult(0);
+                }
+                options.Tracer.AsVerbose("Check passed. Request forwarded.");
+                return next(env);
+            });
+            return builder;
         }
     }
 }
