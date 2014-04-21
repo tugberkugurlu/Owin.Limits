@@ -12,7 +12,7 @@
         /// <summary>
         /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="maxConcurrentRequests">The maximum number of concurrent requests. Use 0 or a negative
         /// number to specify unlimited number of concurrent requests.</param>
         /// <returns>The OWIN builder instance.</returns>
@@ -24,7 +24,7 @@
         /// <summary>
         /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="getMaxConcurrentRequests">A delegate to retrieve the maximum number of concurrent requests. Allows you
         /// to supply different values at runtime. Use 0 or a negative number to specify unlimited number of concurrent requests.</param>
         /// <returns>The OWIN builder instance.</returns>
@@ -36,7 +36,7 @@
         /// <summary>
         /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="options">The max concurrent request options.</param>
         /// <returns>The OWIN builder instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder or options</exception>

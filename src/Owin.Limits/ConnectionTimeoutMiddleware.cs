@@ -13,7 +13,7 @@
         /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
         /// write activity on the response body stream.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="timeout">The timeout.</param>
         /// <returns>The OWIN builder instance.</returns>
         public static Action<MidFunc> ConnectionTimeout(this Action<MidFunc> builder, TimeSpan timeout)
@@ -25,7 +25,7 @@
         /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
         /// write activity on the response body stream.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="getTimeout">A delegate to retrieve the timeout timespan. Allows you
         /// to supply different values at runtime.</param>
         /// <returns>The OWIN builder instance.</returns>
@@ -38,7 +38,7 @@
         /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
         /// write activity on the response body stream.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="options">The connection timeout options.</param>
         /// <returns>The OWIN builder instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder or options </exception>

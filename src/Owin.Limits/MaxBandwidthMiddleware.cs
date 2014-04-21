@@ -12,7 +12,7 @@
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="maxBytesPerSecond">The maximum number of bytes per second to be transferred. Use 0 or a negative
         /// number to specify infinite bandwidth.</param>
         /// <returns>The OWIN builder instance.</returns>
@@ -24,7 +24,7 @@
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="getMaxBytesPerSecond">A delegate to retrieve the maximum number of bytes per second to be transferred.
         /// Allows you to supply different values at runtime. Use 0 or a negative number to specify infinite bandwidth.</param>
         /// <returns>The builder instance.</returns>
@@ -36,7 +36,7 @@
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="options">The max bandwith options.</param>
         /// <returns>The OWIN builder instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder or options</exception>

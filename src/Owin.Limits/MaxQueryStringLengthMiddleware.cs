@@ -11,7 +11,7 @@
         /// <summary>
         /// Limits the length of the query string.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="maxQueryStringLength">Maximum length of the query string.</param>
         /// <returns>The OWIN builder instance.</returns>
         public static Action<MidFunc> MaxQueryStringLength(this Action<MidFunc> builder, int maxQueryStringLength)
@@ -22,7 +22,7 @@
         /// <summary>
         /// Limits the length of the query string.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="getMaxQueryStringLength">A delegate to get the maximum query string length.</param>
         /// <returns>The OWIN builder instance.</returns>
         public static Action<MidFunc> MaxQueryStringLength(this Action<MidFunc> builder, Func<int> getMaxQueryStringLength)
@@ -33,7 +33,7 @@
         /// <summary>
         /// Limits the length of the query string.
         /// </summary>
-        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="builder">The OWIN builder instance.</param>
         /// <param name="options">The max querystring length options.</param>
         /// <returns>The OWIN builder instance.</returns>
         /// <exception cref="System.ArgumentNullException">builder or options</exception>

@@ -25,7 +25,6 @@
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="getMaxContentLength">A delegate to get the maximum content length.</param>
         /// <returns>The OWIN builder instance.</returns>
-        /// <exception cref="System.ArgumentNullException">builder</exception>
         public static Action<MidFunc> MaxRequestContentLength(this Action<MidFunc> builder, Func<int> getMaxContentLength)
         {
             return MaxRequestContentLength(builder, new MaxRequestContentLengthOptions(getMaxContentLength));
