@@ -1,53 +1,71 @@
 ﻿namespace Owin.Limits
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Microsoft.Owin;
-    using Owin.Limits.Annotations;
 
-    [UsedImplicitly]
-    public class MaxQueryStringLengthMiddleware : MiddlewareBase
+    public static class MaxQueryStringLengthMiddleware2
     {
-        private readonly MaxQueryStringLengthOptions _options;
-
-        public MaxQueryStringLengthMiddleware(Func<IDictionary<string, object>, Task> next, MaxQueryStringLengthOptions options)
-            : base(next.ToAppFunc(), options.Tracer)
+        /// <summary>
+        /// Limits the length of the query string.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="maxQueryStringLength">Maximum length of the query string.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        public static Action<MidFunc> MaxQueryStringLength(this Action<MidFunc> builder, int maxQueryStringLength)
         {
-            _options = options;
+            return MaxQueryStringLength(builder, () => maxQueryStringLength);
         }
 
-        protected override async Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
+        /// <summary>
+        /// Limits the length of the query string.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="getMaxQueryStringLength">A delegate to get the maximum query string length.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        public static Action<MidFunc> MaxQueryStringLength(this Action<MidFunc> builder, Func<int> getMaxQueryStringLength)
         {
-            environment.MustNotNull("environment");
+            return MaxQueryStringLength(builder, new MaxQueryStringLengthOptions(getMaxQueryStringLength));
+        }
 
-            _options.Tracer.AsVerbose("{0} starts processing request", GetType().Name);
+        /// <summary>
+        /// Limits the length of the query string.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="options">The max querystring length options.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder or options</exception>
+        public static Action<MidFunc> MaxQueryStringLength(this Action<MidFunc> builder, MaxQueryStringLengthOptions options)
+        {
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
 
-            var context = new OwinContext(environment);
-            QueryString queryString = context.Request.QueryString;
-            if (queryString.HasValue)
+            builder(next => async env =>
             {
-                int maxQueryStringLength = _options.GetMaxQueryStringLength();
-                string unescapedQueryString = Uri.UnescapeDataString(queryString.Value);
-                _options.Tracer.AsVerbose("Querystring of request with an unescaped length of {0}", unescapedQueryString.Length);
-                if (unescapedQueryString.Length > maxQueryStringLength)
+                var context = new OwinContext(env);
+                QueryString queryString = context.Request.QueryString;
+                if (queryString.HasValue)
                 {
-                    _options.Tracer.AsInfo("Querystring (Length {0}) too long (allowed {1}). Request rejected.",
-                        unescapedQueryString.Length,
-                        maxQueryStringLength);
-                    context.Response.StatusCode = 414;
-                    context.Response.ReasonPhrase = _options.LimitReachedReasonPhrase(context.Response.StatusCode);
-                    return;
+                    int maxQueryStringLength = options.GetMaxQueryStringLength();
+                    string unescapedQueryString = Uri.UnescapeDataString(queryString.Value);
+                    options.Tracer.AsVerbose("Querystring of request with an unescaped length of {0}", unescapedQueryString.Length);
+                    if (unescapedQueryString.Length > maxQueryStringLength)
+                    {
+                        options.Tracer.AsInfo("Querystring (Length {0}) too long (allowed {1}). Request rejected.",
+                            unescapedQueryString.Length,
+                            maxQueryStringLength);
+                        context.Response.StatusCode = 414;
+                        context.Response.ReasonPhrase = options.LimitReachedReasonPhrase(context.Response.StatusCode);
+                        return;
+                    }
+                    options.Tracer.AsVerbose("Querystring length check passed.");
                 }
-                _options.Tracer.AsVerbose("Querystring length check passed.");
-            }
-            else
-            {
-                _options.Tracer.AsVerbose("No querystring.");
-            }
-
-            _options.Tracer.AsVerbose("{0} finished processing request. Request is forwarded.", GetType().Name);
-            await next(environment);
+                else
+                {
+                    options.Tracer.AsVerbose("No querystring.");
+                }
+                await next(env);
+            });
+            return builder;
         }
     }
 }

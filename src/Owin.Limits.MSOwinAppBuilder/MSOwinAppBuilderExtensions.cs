@@ -115,11 +115,7 @@ namespace Owin //TODO what should this namespace be?
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The connection timeout options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// builder
-        /// or
-        /// options
-        /// </exception>
+        /// <exception cref="System.ArgumentNullException">builder or options</exception>
         public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, ConnectionTimeoutOptions options)
         {
             builder.MustNotNull("builder");
@@ -158,13 +154,10 @@ namespace Owin //TODO what should this namespace be?
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max querystring length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">builder or options</exception>
         public static IAppBuilder MaxQueryStringLength(this IAppBuilder builder, MaxQueryStringLengthOptions options)
         {
-            builder.MustNotNull("builder");
-            options.MustNotNull("options");
-
-            return builder.Use(typeof(MaxQueryStringLengthMiddleware), options);
+            builder.Use().MaxQueryStringLength(options);
+            return builder;
         }
 
         /// <summary>
