@@ -115,12 +115,8 @@ namespace Owin //TODO what should this namespace be?
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The connection timeout options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">builder or options</exception>
         public static IAppBuilder ConnectionTimeout(this IAppBuilder builder, ConnectionTimeoutOptions options)
         {
-            builder.MustNotNull("builder");
-            options.MustNotNull("options");
-
             builder.Use().ConnectionTimeout(options);
             return builder;
         }
@@ -189,12 +185,8 @@ namespace Owin //TODO what should this namespace be?
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max request content length options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">builder or options </exception>
         public static IAppBuilder MaxRequestContentLength(this IAppBuilder builder, MaxRequestContentLengthOptions options)
         {
-            builder.MustNotNull("builder");
-            options.MustNotNull("options");
-
             builder.Use().MaxRequestContentLength(options);
             return builder;
         }
