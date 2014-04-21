@@ -53,7 +53,12 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="OwinDelegates.cs" />
-    <Compile Include="ConnectionTimeoutMiddleware.cs" />
+    <Compile Include="OwinLimitsMiddleware.MaxUrlLength.cs" />
+    <Compile Include="OwinLimitsMiddleware.MaxRequestContentLength.cs" />
+    <Compile Include="OwinLimitsMiddleware.MaxQueryStringLength.cs" />
+    <Compile Include="OwinLimitsMiddleware.MaxConcurrentRequests.cs" />
+    <Compile Include="OwinLimitsMiddleware.MaxBandwidth.cs" />
+    <Compile Include="OwinLimitsMiddleware.ConnectionTimeout.cs" />
     <Compile Include="ConnectionTimeoutOptions.cs" />
     <Compile Include="ContentLengthExceededException.cs" />
     <Compile Include="ContentLengthLimitingStream.cs" />
@@ -62,18 +67,13 @@
     <Compile Include="Guard.cs" />
     <Compile Include="MaxBandwidthOptions.cs" />
     <Compile Include="MaxConcurrentRequestOptions.cs" />
-    <Compile Include="MaxConcurrentRequestsMiddleware.cs" />
     <Compile Include="MaxQueryStringLengthOptions.cs" />
-    <Compile Include="MaxRequestContentLengthMiddleware.cs" />
-    <Compile Include="MaxQueryStringLengthMiddleware.cs" />
     <Compile Include="MaxRequestContentLengthOptions.cs" />
-    <Compile Include="MaxUrlLengthMiddleware.cs" />
     <Compile Include="MaxUrlLengthOptions.cs" />
-    <Compile Include="MiddlewareBase.cs" />
     <Compile Include="OptionsBase.cs" />
+    <Compile Include="OwinLimitsMiddlewareExtensions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MaxBandwidthMiddleware.cs" />
     <Compile Include="StringExtension.cs" />
     <Compile Include="ThrottleStream.cs" />
     <Compile Include="TimeoutStream.cs" />

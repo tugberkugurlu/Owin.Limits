@@ -6,11 +6,6 @@ namespace Owin //TODO what should this namespace be?
 
     public static class MSOwinAppBuilderExtensions
     {
-        public static Action<MidFunc> Use(this IAppBuilder builder)
-        {
-            return middleware => builder.Use(middleware);
-        }
-
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.
         /// </summary>
@@ -224,6 +219,11 @@ namespace Owin //TODO what should this namespace be?
         {
             builder.Use().MaxUrlLength(options);
             return builder;
+        }
+
+        private static Action<MidFunc> Use(this IAppBuilder builder)
+        {
+            return middleware => builder.Use(middleware);
         }
     }
 }
