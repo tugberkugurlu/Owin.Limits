@@ -1,36 +1,67 @@
 ﻿namespace Owin.Limits
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Threading.Tasks;
     using Microsoft.Owin;
-    using Owin.Limits.Annotations;
 
-    [UsedImplicitly]
-    public class ConnectionTimeoutMiddleware : MiddlewareBase
+    /// <summary>
+    /// Middleware to limit the duration of a connection if there hasn't been any read or write activity.
+    /// </summary>
+    public static class ConnectionTimeoutMiddleware
     {
-        private readonly ConnectionTimeoutOptions _options;
-
-        public ConnectionTimeoutMiddleware(Func<IDictionary<string, object>, Task> next, ConnectionTimeoutOptions options)
-            : base(next.ToAppFunc(), options.Tracer)
+        /// <summary>
+        /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
+        /// write activity on the response body stream.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        public static Action<MidFunc> ConnectionTimeout(this Action<MidFunc> builder, TimeSpan timeout)
         {
-            _options = options;
+            return ConnectionTimeout(builder, () => timeout);
         }
 
-        protected override Task InvokeInternal(AppFunc next, IDictionary<string, object> environment)
+        /// <summary>
+        /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
+        /// write activity on the response body stream.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="getTimeout">A delegate to retrieve the timeout timespan. Allows you
+        /// to supply different values at runtime.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        public static Action<MidFunc> ConnectionTimeout(this Action<MidFunc> builder, Func<TimeSpan> getTimeout)
         {
-            var context = new OwinContext(environment);
-            Stream requestBodyStream = context.Request.Body ?? Stream.Null;
-            Stream responseBodyStream = context.Response.Body;
+            return ConnectionTimeout(builder, new ConnectionTimeoutOptions(getTimeout));
+        }
 
-            _options.Tracer.AsVerbose("Configure timeouts.");
-            TimeSpan connectionTimeout = _options.GetTimeout();
-            context.Request.Body = new TimeoutStream(requestBodyStream, connectionTimeout, _options.Tracer);
-            context.Response.Body = new TimeoutStream(responseBodyStream, connectionTimeout, _options.Tracer);
+        /// <summary>
+        /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
+        /// write activity on the response body stream.
+        /// </summary>
+        /// <param name="builder">An OWIN builder instance.</param>
+        /// <param name="options">The connection timeout options.</param>
+        /// <returns>The OWIN builder instance.</returns>
+        /// <exception cref="System.ArgumentNullException">builder or options </exception>
+        public static Action<MidFunc> ConnectionTimeout(this Action<MidFunc> builder, ConnectionTimeoutOptions options)
+        {
+            builder.MustNotNull("builder");
+            options.MustNotNull("options");
 
-            _options.Tracer.AsVerbose("Request with configured timeout forwarded.");
-            return next(environment);
+            builder(next => env =>
+            {
+                var context = new OwinContext(env);
+                Stream requestBodyStream = context.Request.Body ?? Stream.Null;
+                Stream responseBodyStream = context.Response.Body;
+
+                options.Tracer.AsVerbose("Configure timeouts.");
+                TimeSpan connectionTimeout = options.GetTimeout();
+                context.Request.Body = new TimeoutStream(requestBodyStream, connectionTimeout, options.Tracer);
+                context.Response.Body = new TimeoutStream(responseBodyStream, connectionTimeout, options.Tracer);
+
+                options.Tracer.AsVerbose("Request with configured timeout forwarded.");
+                return next(env);
+            });
+            return builder;
         }
     }
 }

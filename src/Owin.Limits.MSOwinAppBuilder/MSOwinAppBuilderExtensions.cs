@@ -1,5 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
-namespace Owin
+namespace Owin //TODO what should this namespace
 {
     using System;
     using Owin.Limits;
@@ -136,7 +136,8 @@ namespace Owin
             builder.MustNotNull("builder");
             options.MustNotNull("options");
 
-            return builder.Use(typeof(ConnectionTimeoutMiddleware), options);
+            builder.Use().ConnectionTimeout(options);
+            return builder;
         }
 
         /// <summary>
