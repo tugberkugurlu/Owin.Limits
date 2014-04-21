@@ -1,5 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
-namespace Owin //TODO what should this namespace
+namespace Owin //TODO what should this namespace be?
 {
     using System;
     using Owin.Limits;
@@ -41,12 +41,8 @@ namespace Owin //TODO what should this namespace
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max bandwith options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">builder</exception>
         public static IAppBuilder MaxBandwidth(this IAppBuilder builder, MaxBandwidthOptions options)
         {
-            builder.MustNotNull("builder");
-            options.MustNotNull("options");
-
             builder.Use().MaxBandwidth(options);
             return builder;
         }
@@ -81,17 +77,10 @@ namespace Owin //TODO what should this namespace
         /// <param name="builder">The <see cref="IAppBuilder"/> instance.</param>
         /// <param name="options">The max concurrent request options.</param>
         /// <returns>The <see cref="IAppBuilder"/> instance.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// builder
-        /// or
-        /// options
-        /// </exception>
         public static IAppBuilder MaxConcurrentRequests(this IAppBuilder builder, MaxConcurrentRequestOptions options)
         {
-            builder.MustNotNull("builder");
-            options.MustNotNull("options");
-
-            return builder.Use(typeof(MaxConcurrentRequestsMiddleware), options);
+            builder.Use().MaxConcurrentRequests(options);
+            return builder;
         }
 
         /// <summary>
