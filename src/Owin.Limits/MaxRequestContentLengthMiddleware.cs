@@ -3,6 +3,9 @@
     using System;
     using Microsoft.Owin;
 
+    /// <summary>
+    /// OWIN middleware that limits the reqeust content length. Supports chunked requests.
+    /// </summary>
     public static class MaxRequestContentLengthMiddleware
     {
         /// <summary>

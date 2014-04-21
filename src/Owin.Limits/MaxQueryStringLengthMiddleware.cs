@@ -3,7 +3,10 @@
     using System;
     using Microsoft.Owin;
 
-    public static class MaxQueryStringLengthMiddleware2
+    /// <summary>
+    /// OWIN middleware to limit the size of a query string.
+    /// </summary>
+    public static class MaxQueryStringLengthMiddleware
     {
         /// <summary>
         /// Limits the length of the query string.
