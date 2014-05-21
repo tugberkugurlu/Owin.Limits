@@ -15,9 +15,35 @@ OWIN middleware to apply limits to an OWIN pipeline. Install via [nuget].
  - Header limits?
  - Per request limits
 
+#### IAppBuilder
+
+Owin.dll and IAppBuilder is deprecated. As of version 2.0.0, Owin.Limits no longer depends on owin.dll. To provide compatibility with IAppBuilder, add the following class to your application:
+
+```csharp
+namespace Owin
+{
+    using System;
+    using Owin.Limits;
+
+    internal static class AppBuilderExtensions
+    {
+        internal static Action<MidFunc> Use(this IAppBuilder builder)
+        {
+            return middleware => builder.Use(middleware);
+        }
+
+        internal static IAppBuilder Use(this Action<MidFunc> middleware, IAppBuilder builder)
+        {
+            return builder;
+        }
+    }
+}
+```
+
 #### Examples
 
-Configuration values can be supplied as constants or with a delegate. The latter allows you to change the values at runtime, however you see fit.
+Configuration values can be supplied as constants or with a delegate. The latter allows you to change the values at runtime. Use which ever you see fit. This code assumes you have the above `AppBuilderExtensions` class in your application. 
+
 
 ```csharp
 public class Startup
@@ -25,7 +51,7 @@ public class Startup
     public void Configuration(IAppBuilder builder)
     {
         //static settings
-        builder
+        builder.Use()
             .MaxBandwidth(10000) //bps
             .MaxConcurrentRequests(10)
             .ConnectionTimeout(TimeSpan.FromSeconds(10))
@@ -35,7 +61,7 @@ public class Startup
             .UseEtc(..);
             
         //dynamic settings
-        builder
+        builder.Use()
             .MaxBandwidth(() => 10000) //bps
             .MaxConcurrentRequests(() => 10)
             .ConnectionTimeout(() => TimeSpan.FromSeconds(10))
