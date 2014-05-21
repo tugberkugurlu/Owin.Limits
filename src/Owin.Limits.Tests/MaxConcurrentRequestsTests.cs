@@ -53,11 +53,12 @@
         private static HttpClient CreateHttpClient(int maxConcurrentRequests)
         {
             return TestServer.Create(builder => builder
-                .MaxBandwidth(1)
+                .Use().MaxBandwidth(1)
                 .MaxConcurrentRequests(new MaxConcurrentRequestOptions(maxConcurrentRequests)
                 {
                     LimitReachedReasonPhrase = code => "custom phrase"
                 })
+                .Use(builder)
                 .Use(async (context, _) =>
                 {
                     byte[] bytes = Enumerable.Repeat((byte) 0x1, 2).ToArray();

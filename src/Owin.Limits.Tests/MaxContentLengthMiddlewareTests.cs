@@ -158,10 +158,11 @@
         private static RequestBuilder CreateRequest(int maxContentLength)
         {
             TestServer server = TestServer.Create(builder => builder
-                .MaxRequestContentLength(new MaxRequestContentLengthOptions(maxContentLength)
+                .Use().MaxRequestContentLength(new MaxRequestContentLengthOptions(maxContentLength)
                 {
                     LimitReachedReasonPhrase = code => "custom phrase"
                 })
+                .Use(builder)
                 .Use(async (context, _) =>
                 {
                     await new StreamReader(context.Request.Body).ReadToEndAsync();
