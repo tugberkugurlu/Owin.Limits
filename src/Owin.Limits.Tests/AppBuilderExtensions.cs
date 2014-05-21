@@ -1,6 +1,7 @@
-﻿namespace Owin.Limits
+﻿namespace Owin
 {
     using System;
+    using Owin.Limits;
 
     internal static class AppBuilderExtensions
     {
