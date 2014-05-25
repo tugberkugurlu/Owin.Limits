@@ -5,7 +5,7 @@
     /// <summary>
     /// Extension methods for OWIN Limits middlware.
     /// </summary>
-    public static class OwinLimitsMiddlewareExtensions
+    public static class LimitsMiddlewareExtensions
     {
         /// <summary>
         /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
@@ -44,7 +44,7 @@
         {
             builder.MustNotNull("builder");
 
-            builder(OwinLimitsMiddleware.ConnectionTimeout(options));
+            builder(LimitsMiddleware.ConnectionTimeout(options));
             return builder;
         }
 
@@ -83,7 +83,7 @@
         {
             builder.MustNotNull("builder");
 
-            builder(OwinLimitsMiddleware.MaxBandwidth(options));
+            builder(LimitsMiddleware.MaxBandwidth(options));
             return builder;
         }
 
@@ -122,7 +122,7 @@
         {
             builder.MustNotNull("builder");
 
-            builder(OwinLimitsMiddleware.MaxConcurrentRequests(options));
+            builder(LimitsMiddleware.MaxConcurrentRequests(options));
             return builder;
         }
 
@@ -159,7 +159,7 @@
         {
             builder.MustNotNull("builder");
 
-            builder(OwinLimitsMiddleware.MaxQueryStringLength(options));
+            builder(LimitsMiddleware.MaxQueryStringLength(options));
             return builder;
         }
 
@@ -196,7 +196,7 @@
         {
             builder.MustNotNull("builder");
 
-            builder(OwinLimitsMiddleware.MaxRequestContentLength(options));
+            builder(LimitsMiddleware.MaxRequestContentLength(options));
             return builder;
         }
 
@@ -233,7 +233,7 @@
         {
             builder.MustNotNull("builder");
 
-            builder(OwinLimitsMiddleware.MaxUrlLength(options));
+            builder(LimitsMiddleware.MaxUrlLength(options));
             return builder;
         }
     }

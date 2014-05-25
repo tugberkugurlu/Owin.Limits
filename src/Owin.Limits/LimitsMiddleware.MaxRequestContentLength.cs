@@ -3,7 +3,7 @@
     using System;
     using Microsoft.Owin;
 
-    public static partial class OwinLimitsMiddleware
+    public static partial class LimitsMiddleware
     {
         /// <summary>
         /// Limits the length of the request content.

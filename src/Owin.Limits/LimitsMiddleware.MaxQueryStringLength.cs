@@ -3,7 +3,7 @@
     using System;
     using Microsoft.Owin;
 
-    public static partial class OwinLimitsMiddleware
+    public static partial class LimitsMiddleware
     {
         /// <summary>
         /// Limits the number of concurrent requests that can be handled used by the subsequent stages in the owin pipeline.

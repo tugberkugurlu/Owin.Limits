@@ -4,7 +4,7 @@
     using System.IO;
     using Microsoft.Owin;
 
-    public static partial class OwinLimitsMiddleware
+    public static partial class LimitsMiddleware
     {
         /// <summary>
         /// Limits the bandwith used by the subsequent stages in the owin pipeline.

@@ -7,7 +7,7 @@
     /// <summary>
     /// OWIN Limits middleware functions.
     /// </summary>
-    public static partial class OwinLimitsMiddleware
+    public static partial class LimitsMiddleware
     {
         /// <summary>
         /// Timeouts the connection if there hasn't been an read activity on the request body stream or any
