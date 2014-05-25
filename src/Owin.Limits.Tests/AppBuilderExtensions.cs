@@ -4,12 +4,12 @@
 
     internal static class AppBuilderExtensions
     {
-        internal static Action<MidFunc> Use(this IAppBuilder builder)
+        internal static BuildFunc Use(this IAppBuilder builder)
         {
             return middleware => builder.Use(middleware);
         }
 
-        internal static IAppBuilder Use(this Action<MidFunc> middleware, IAppBuilder builder)
+        internal static IAppBuilder Use(this BuildFunc middleware, IAppBuilder builder)
         {
             return builder;
         }

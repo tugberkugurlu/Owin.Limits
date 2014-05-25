@@ -14,4 +14,10 @@ namespace Owin.Limits
     /// </summary>
     /// <param name="appFunc">An OWIN application func.</param>
     public delegate AppFunc MidFunc(AppFunc appFunc);
+
+    /// <summary>
+    /// OWIN builder func.
+    /// </summary>
+    /// <param name="midFunc">An OWIN middleware func.</param>
+    public delegate void BuildFunc(MidFunc midFunc);
 }
