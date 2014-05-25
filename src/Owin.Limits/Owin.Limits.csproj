@@ -52,18 +52,11 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="OwinDelegates.cs" />
-    <Compile Include="LimitsMiddleware.MaxUrlLength.cs" />
-    <Compile Include="LimitsMiddleware.MaxRequestContentLength.cs" />
-    <Compile Include="LimitsMiddleware.MaxQueryStringLength.cs" />
-    <Compile Include="LimitsMiddleware.MaxConcurrentRequests.cs" />
-    <Compile Include="LimitsMiddleware.MaxBandwidth.cs" />
-    <Compile Include="LimitsMiddleware.ConnectionTimeout.cs" />
+    <Compile Include="LimitsMiddleware.cs" />
     <Compile Include="ConnectionTimeoutOptions.cs" />
     <Compile Include="ContentLengthExceededException.cs" />
     <Compile Include="ContentLengthLimitingStream.cs" />
     <Compile Include="DefaultDelegateHelper.cs" />
-    <Compile Include="EnviromentExtensions.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="MaxBandwidthOptions.cs" />
     <Compile Include="MaxConcurrentRequestOptions.cs" />
