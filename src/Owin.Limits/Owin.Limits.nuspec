@@ -15,7 +15,7 @@
         <tags>owin, middleware, throttling, limits</tags>
         <frameworkAssemblies />
         <releaseNotes>
-            TODO
+            Remove dependency on owin.dll
         </releaseNotes>
     </metadata>
     <files>
